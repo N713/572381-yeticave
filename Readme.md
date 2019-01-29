@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Илья Наумов](https://up.htmlacademy.ru/php/8/user/572381).
-* Наставник: `Неизвестно`.
+* Наставник: [Антон Дорожкин](https://htmlacademy.ru/profile/trekov).
 
 ---
 
