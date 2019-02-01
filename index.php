@@ -136,10 +136,11 @@ $lot_list = [$lot1, $lot2, $lot3, $lot4, $lot5, $lot6];
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <!--заполните этот список из массива категорий-->
-            <li class="nav__item">
-                <a href="pages/all-lots.html">Название категории</a>
-            </li>
+            <?php for ($i = 0; $i < count($categories); $i++): ?>
+                <li class="nav__item">
+                    <a href="pages/all-lots.html"><?=$categories[$i]; ?></a>
+                </li>
+            <?php endfor; ?>
         </ul>
     </nav>
     <div class="main-footer__bottom container">
