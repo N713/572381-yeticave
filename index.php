@@ -4,49 +4,49 @@ $is_auth = rand(0, 1);
 $user_name = 'Илья'; // укажите здесь ваше имя
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 
-$lot1 = [
-    'name' => '2014 Rossignol District Snowboard',
-    'category' => 'Доски и лыжи',
-    'price' => 10999,
-    'url' => 'img/lot-1.jpg'
-];
+$lot_list = [
+    [
+        'name' => '2014 Rossignol District Snowboard',
+        'category' => 'Доски и лыжи',
+        'price' => 10999,
+        'url' => 'img/lot-1.jpg'
+    ],
 
-$lot2 = [
-    'name' => 'DC Ply Mens 2016/2017 Snowboard',
-    'category' => 'Доски и лыжи',
-    'price' => 159999,
-    'url' => 'img/lot-2.jpg'
-];
+    [
+        'name' => 'DC Ply Mens 2016/2017 Snowboard',
+        'category' => 'Доски и лыжи',
+        'price' => 159999,
+        'url' => 'img/lot-2.jpg'
+    ],
 
-$lot3 = [
-    'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
-    'category' => 'Крепления',
-    'price' => 8000,
-    'url' => 'img/lot-3.jpg'
-];
+    [
+        'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
+        'category' => 'Крепления',
+        'price' => 8000,
+        'url' => 'img/lot-3.jpg'
+    ],
 
-$lot4 = [
-    'name' => 'Ботинки для сноуборда DC Mutiny Charocal',
-    'category' => 'Ботинки',
-    'price' => 10999,
-    'url' => 'img/lot-4.jpg'
-];
+    [
+        'name' => 'Ботинки для сноуборда DC Mutiny Charocal',
+        'category' => 'Ботинки',
+        'price' => 10999,
+        'url' => 'img/lot-4.jpg'
+    ],
 
-$lot5 = [
-    'name' => 'Куртка для сноуборда DC Mutiny Charocal',
-    'category' => 'Одежда',
-    'price' => 7500,
-    'url' => 'img/lot-5.jpg'
-];
+    [
+        'name' => 'Куртка для сноуборда DC Mutiny Charocal',
+        'category' => 'Одежда',
+        'price' => 7500,
+        'url' => 'img/lot-5.jpg'
+    ],
 
-$lot6 = [
-    'name' => 'Маска Oakley Canopy',
-    'category' => 'Разное',
-    'price' => 5400,
-    'url' => 'img/lot-6.jpg'
+    [
+        'name' => 'Маска Oakley Canopy',
+        'category' => 'Разное',
+        'price' => 5400,
+        'url' => 'img/lot-6.jpg'
+    ],
 ];
-
-$lot_list = [$lot1, $lot2, $lot3, $lot4, $lot5, $lot6];
 
 ?>
 <!DOCTYPE html>
@@ -75,7 +75,7 @@ $lot_list = [$lot1, $lot2, $lot3, $lot4, $lot5, $lot6];
         <nav class="user-menu">
             <?php if($is_auth === 1): ?>
               <div class="user-menu__logged">
-                <p><?=$user_name?></p>
+                <p><?= $user_name?></p>
               </div>
             <?php else: ?>
                 <ul class="user-menu__list">
@@ -99,7 +99,9 @@ $lot_list = [$lot1, $lot2, $lot3, $lot4, $lot5, $lot6];
         <ul class="promo__list">
             <?php for ($i = 0; $i < count($categories); $i++): ?>
                 <li class="promo__item promo__item--boards">
-                    <a class="promo__link" href="pages/all-lots.html"><?=$categories[$i]; ?></a>
+                    <?php if (isset($categories[$i])): ?>
+                        <a class="promo__link" href="pages/all-lots.html"><?= strip_tags($categories[$i]); ?></a>
+                    <?endif; ?>
                 </li>
             <?php endfor; ?>
         </ul>
@@ -109,19 +111,28 @@ $lot_list = [$lot1, $lot2, $lot3, $lot4, $lot5, $lot6];
             <h2>Открытые лоты</h2>
         </div>
         <ul class="lots__list">
-            <?php for($i = 0; $i < count($lot_list); $i++): ?>
-            <?php $current_lot = $lot_list[$i]; ?>
+            <?php foreach($lot_list as $lot): ?>
             <li class="lots__item lot">
                 <div class="lot__image">
-                    <img src="<?=$current_lot['url']; ?>" width="350" height="260" alt="">
+                    <?php if (isset($lot['url'])): ?>
+                        <img src="<?= strip_tags($lot['url']); ?>" width="350" height="260" alt="">
+                    <?endif; ?>
                 </div>
                 <div class="lot__info">
-                    <span class="lot__category"><?=$current_lot['category']; ?></span>
-                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=$current_lot['name']; ?></a></h3>
+                    <?php if (isset($lot['category'])): ?>
+                        <span class="lot__category"><?= strip_tags($lot['category']); ?></span>
+                    <?endif; ?>
+                    <h3 class="lot__title">
+                        <?php if(isset($lot['name'])):?>
+                            <a class="text-link" href="pages/lot.html"><?= strip_tags($lot['name']); ?></a>
+                        <?endif; ?>
+                    </h3>
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?=$current_lot['price']; ?><b class="rub">р</b></span>
+                            <?php if (isset($lot['price'])):?>
+                                <span class="lot__cost"><?= strip_tags($lot['price']); ?><b class="rub">р</b></span>
+                            <?endif; ?>
                         </div>
                         <div class="lot__timer timer">
                             12:23
@@ -129,7 +140,7 @@ $lot_list = [$lot1, $lot2, $lot3, $lot4, $lot5, $lot6];
                     </div>
                 </div>
             </li>
-            <?php endfor; ?>
+            <?php endforeach; ?>
         </ul>
     </section>
 </main>
@@ -140,7 +151,9 @@ $lot_list = [$lot1, $lot2, $lot3, $lot4, $lot5, $lot6];
         <ul class="nav__list container">
             <?php for ($i = 0; $i < count($categories); $i++): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?=$categories[$i]; ?></a>
+                    <?php if(isset($categories[$i])): ?>
+                        <a href="pages/all-lots.html"><?= strip_tags($categories[$i]); ?></a>
+                    <?endif ;?>
                 </li>
             <?php endfor; ?>
         </ul>
