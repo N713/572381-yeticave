@@ -48,6 +48,16 @@ $lot_list = [
     ],
 ];
 
+function format_price ($price) {
+    $ceiled_price = ceil($price);
+    if ($ceiled_price > 1000) {
+        $ceiled_price = number_format($ceiled_price, 0, ',', ' ');
+    }
+    $formated_price = $ceiled_price . ' ₽';
+
+    return $formated_price;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -131,7 +141,8 @@ $lot_list = [
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
                             <?php if (isset($lot['price'])):?>
-                                <span class="lot__cost"><?= strip_tags($lot['price']); ?><b class="rub">р</b></span>
+                                <span class="lot__cost"><?= format_price(strip_tags($lot['price'])); ?>
+                                <!--<b class="rub">р</b></span>-->
                             <?endif; ?>
                         </div>
                         <div class="lot__timer timer">
