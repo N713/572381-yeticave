@@ -51,7 +51,12 @@ $lot_list = [
 /**
  *Функция для форматирования цены, а именно отделения разряда тысяч
  *Пример: 14000 -> 14 000
+ *
+ * @param int $price
+ *
+ * @return string
  */
+
 function format_price ($price) {
     $ceiled_price = ceil($price);
     if ($ceiled_price > 1000) {
