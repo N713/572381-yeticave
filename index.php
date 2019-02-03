@@ -48,14 +48,17 @@ $lot_list = [
     ],
 ];
 
+/**
+ *Функция для форматирования цены, а именно отделения разряда тысяч
+ *Пример: 14000 -> 14 000
+ */
 function format_price ($price) {
     $ceiled_price = ceil($price);
     if ($ceiled_price > 1000) {
         $ceiled_price = number_format($ceiled_price, 0, ',', ' ');
     }
-    $formated_price = $ceiled_price . ' ₽';
 
-    return $formated_price;
+    return $ceiled_price . ' ₽';
 }
 
 ?>
@@ -111,7 +114,7 @@ function format_price ($price) {
                 <li class="promo__item promo__item--boards">
                     <?php if (isset($categories[$i])): ?>
                         <a class="promo__link" href="pages/all-lots.html"><?= strip_tags($categories[$i]); ?></a>
-                    <?endif; ?>
+                    <?php endif; ?>
                 </li>
             <?php endfor; ?>
         </ul>
@@ -122,35 +125,34 @@ function format_price ($price) {
         </div>
         <ul class="lots__list">
             <?php foreach($lot_list as $lot): ?>
-            <li class="lots__item lot">
-                <div class="lot__image">
-                    <?php if (isset($lot['url'])): ?>
-                        <img src="<?= strip_tags($lot['url']); ?>" width="350" height="260" alt="">
-                    <?endif; ?>
-                </div>
-                <div class="lot__info">
-                    <?php if (isset($lot['category'])): ?>
-                        <span class="lot__category"><?= strip_tags($lot['category']); ?></span>
-                    <?endif; ?>
-                    <h3 class="lot__title">
-                        <?php if(isset($lot['name'])):?>
-                            <a class="text-link" href="pages/lot.html"><?= strip_tags($lot['name']); ?></a>
-                        <?endif; ?>
-                    </h3>
-                    <div class="lot__state">
-                        <div class="lot__rate">
-                            <span class="lot__amount">Стартовая цена</span>
-                            <?php if (isset($lot['price'])):?>
-                                <span class="lot__cost"><?= format_price(strip_tags($lot['price'])); ?>
-                                <!--<b class="rub">р</b></span>-->
-                            <?endif; ?>
-                        </div>
-                        <div class="lot__timer timer">
-                            12:23
+                <li class="lots__item lot">
+                    <div class="lot__image">
+                        <?php if (isset($lot['url'])): ?>
+                            <img src="<?= strip_tags($lot['url']); ?>" width="350" height="260" alt="">
+                        <?php endif; ?>
+                    </div>
+                    <div class="lot__info">
+                        <?php if (isset($lot['category'])): ?>
+                            <span class="lot__category"><?= strip_tags($lot['category']); ?></span>
+                        <?php endif; ?>
+                        <h3 class="lot__title">
+                            <?php if(isset($lot['name'])):?>
+                                <a class="text-link" href="pages/lot.html"><?= strip_tags($lot['name']); ?></a>
+                            <?php endif; ?>
+                        </h3>
+                        <div class="lot__state">
+                            <div class="lot__rate">
+                                <span class="lot__amount">Стартовая цена</span>
+                                <?php if (isset($lot['price'])):?>
+                                    <span class="lot__cost"><?= strip_tags(format_price($lot['price'])); ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="lot__timer timer">
+                                12:23
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
             <?php endforeach; ?>
         </ul>
     </section>
@@ -164,7 +166,7 @@ function format_price ($price) {
                 <li class="nav__item">
                     <?php if(isset($categories[$i])): ?>
                         <a href="pages/all-lots.html"><?= strip_tags($categories[$i]); ?></a>
-                    <?endif ;?>
+                    <?php endif; ?>
                 </li>
             <?php endfor; ?>
         </ul>
