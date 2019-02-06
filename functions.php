@@ -1,5 +1,14 @@
 <?php
-
+    /**
+     *Функция - шаблонизатор
+     *
+     *$name - имя файла - шаблона
+     *$data - данные в виде ассоциативного массива
+     *
+     *@param string $name
+     *
+     *@param array $data
+     */
     function include_template($name, $data) {
         $name = 'templates/' . $name;
         $result = '';
@@ -16,5 +25,4 @@
 
         return $result;
     }
-
 ?>

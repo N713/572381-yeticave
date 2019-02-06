@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title><?= $page_name; ?></title>
+    <title><?= strip_tags($page_name); ?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
@@ -24,7 +24,7 @@
         <nav class="user-menu">
             <?php if($is_auth === 1): ?>
               <div class="user-menu__logged">
-                <p><?= $user_name?></p>
+                <p><?= strip_tags($user_name); ?></p>
               </div>
             <?php else: ?>
                 <ul class="user-menu__list">

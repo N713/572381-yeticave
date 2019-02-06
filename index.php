@@ -56,7 +56,6 @@ $lot_list = [
  *
  * @return string
  */
-
 function format_price ($price) {
     $ceiled_price = ceil($price);
     if ($ceiled_price > 1000) {
