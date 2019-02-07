@@ -68,7 +68,7 @@
         $minutes = floor( ($time_difference % 3600) / 60 );
         $time = $hours . ':' .  $minutes;
             if($minutes < 10) {
-                $time = $hours . ':' .  '0' . $minutes;
+                $time = $hours . ':' . '0' . $minutes;
             }
         return $time;
     }
