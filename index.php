@@ -1,6 +1,6 @@
 <?php
+date_default_timezone_set('Europe/Moscow');
 $is_auth = rand(0, 1);
-
 $user_name = 'Илья'; // укажите здесь ваше имя
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 
@@ -64,5 +64,3 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
-
-?>

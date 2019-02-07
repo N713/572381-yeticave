@@ -40,7 +40,7 @@
                             <?php endif; ?>
                         </div>
                         <div class="lot__timer timer">
-                            12:23
+                            <?= strip_tags(to_countdown_time()); ?>
                         </div>
                     </div>
                 </div>
