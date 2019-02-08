@@ -44,32 +44,18 @@
     }
 
     /**
-    *Функция для отсчета времени
-    *
-    *$time_difference - время в секундах
-    *
-    *@param int $time_difference
-    *
-    *$hours - расчет количества часов
-    *
-    *@param int $hours
-    *
-    *$minutes - расчет количества минут
-    *
-    *@param int $minutes
-    *
-    *$time - оставшееся время
-    *
-    *@param string $time
-    */
+     * Функция для отсчета времени
+     *
+     * @return string
+     */
     function to_countdown_time() {
-        $time_difference = strtotime('tomorrow') - strtotime('now');
+        $time_difference = strtotime('tomorrow') - time();
         $hours = floor( $time_difference / 3600 );
         $minutes = floor( ($time_difference % 3600) / 60 );
         $time = $hours . ':' .  $minutes;
-            if($minutes < 10) {
-                $time = $hours . ':' . '0' . $minutes;
-            }
+        if($minutes < 10) {
+            $time = $hours . ':' . '0' . $minutes;
+        }
+
         return $time;
     }
-?>
