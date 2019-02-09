@@ -1,6 +1,6 @@
 <?php
+date_default_timezone_set('Europe/Moscow');
 $is_auth = rand(0, 1);
-
 $user_name = 'Илья'; // укажите здесь ваше имя
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 
@@ -48,28 +48,11 @@ $lot_list = [
     ],
 ];
 
-/**
- *Функция для форматирования цены, а именно отделения разряда тысяч
- *Пример: 14000 -> 14 000
- *
- * @param int $price
- *
- * @return string
- */
-function format_price ($price) {
-    $ceiled_price = ceil($price);
-    if ($ceiled_price > 1000) {
-        $ceiled_price = number_format($ceiled_price, 0, ',', ' ');
-    }
-
-    return $ceiled_price . ' ₽';
-}
-
 require_once('functions.php');
 
 $page_content = include_template('index.php', [
     'lot_list' => $lot_list,
-    'categories' => $categories
+    'categories' => $categories,
 ]);
 
 $layout_content = include_template('layout.php', [
@@ -81,5 +64,3 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
-
-?>

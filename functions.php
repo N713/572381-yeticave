@@ -1,5 +1,22 @@
 <?php
     /**
+     *Функция для форматирования цены, а именно отделения разряда тысяч
+     *Пример: 14000 -> 14 000
+     *
+     * @param int $price
+     *
+     * @return string
+     */
+    function format_price ($price) {
+        $ceiled_price = ceil($price);
+        if ($ceiled_price > 1000) {
+            $ceiled_price = number_format($ceiled_price, 0, ',', ' ');
+        }
+
+        return $ceiled_price . ' ₽';
+    }
+
+    /**
      *Функция - шаблонизатор
      *
      *$name - имя файла - шаблона
@@ -25,4 +42,20 @@
 
         return $result;
     }
-?>
+
+    /**
+     * Функция для отсчета времени
+     *
+     * @return string
+     */
+    function to_countdown_time() {
+        $time_difference = strtotime('tomorrow') - time();
+        $hours = floor( $time_difference / 3600 );
+        $minutes = floor( ($time_difference % 3600) / 60 );
+        $time = $hours . ':' .  $minutes;
+        if($minutes < 10) {
+            $time = $hours . ':' . '0' . $minutes;
+        }
+
+        return $time;
+    }
