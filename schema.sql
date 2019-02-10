@@ -43,5 +43,5 @@ CREATE TABLE user (
   name VARCHAR(128) NOT NULL UNIQUE,
   password VARCHAR(128) NOT NULL UNIQUE,
   avatar VARCHAR(128),
-  contact TEXT NOT NULL
+  contact VARCHAR(256) NOT NULL
 );
