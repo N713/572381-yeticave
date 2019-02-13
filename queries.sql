@@ -57,4 +57,5 @@ SELECT *
 FROM lot
 JOIN bet
 ON bet.lot_id = lot.id
+WHERE lot.id = 1
 ORDER BY bet_date DESC;
