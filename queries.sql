@@ -23,9 +23,9 @@ VALUES ('2019.02.06T19:47:59', 'Маска Oakley Canopy', '5', '6', 'Маска
 
 /*Добавляю ставки*/
 INSERT INTO bet (bet_date, amount_to_buy, user_id, lot_id)
-VALUES ('2019.01.03', '11000', '1', '1');
+VALUES ('2019.01.03', '11000', '1', '3');
 INSERT INTO bet (bet_date, amount_to_buy, user_id, lot_id)
-VALUES ('2019.02.03', '15000', '2', '1');
+VALUES ('2019.02.03', '15000', '2', '4');
 
 /*Получаю все категории*/
 SELECT * FROM category;
@@ -34,16 +34,18 @@ SELECT * FROM category;
   Получить самые новые, открытые лоты.
   Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, название категории;
 */
-SELECT lot.name, description, start_cost, image, category.name
+SELECT lot.name AS lot_title, description, start_cost, image, category.name AS category_title, MAX(bet.amount_to_buy) as cost
 FROM lot
-JOIN category
-ON category.id = lot.category_id
-ORDER BY time_of_create DESC;
+       LEFT JOIN category ON category.id = lot.category_id
+       LEFT JOIN bet ON lot.id = bet.lot_id
+WHERE lot.winner_id IS NOT NULL
+GROUP BY lot.id;
 
 /*Показать лот по его id. Получите также название категории, к которой принадлежит лот*/
-SELECT *
+SELECT lot.id AS lot_id, time_of_create, lot.name AS lot_title, category_id, category.name AS category_title, author_id,
+        description, image, start_cost, final_date, bet_step, winner_id
 FROM lot
-JOIN category
+       LEFT JOIN category
 ON category.id = lot.category_id
 WHERE lot.id = 3;
 
@@ -53,9 +55,7 @@ SET name = 'Обновленное имя'
 WHERE id = 5;
 
 /*Получить список самых свежих ставок для лота по его идентификатору*/
-SELECT *
-FROM lot
-JOIN bet
-ON bet.lot_id = lot.id
-WHERE lot.id = 1
-ORDER BY bet_date DESC;
+SELECT id, bet_date, amount_to_buy, user_id, lot_id
+FROM bet
+ORDER BY bet_date DESC
+LIMIT 2;
