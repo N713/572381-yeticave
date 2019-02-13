@@ -28,7 +28,7 @@ INSERT INTO bet (bet_date, amount_to_buy, user_id, lot_id)
 VALUES ('2019.02.03', '15000', '2', '4');
 
 /*Получаю все категории*/
-SELECT * FROM category;
+SELECT id, name FROM category;
 
 /*
   Получить самые новые, открытые лоты.
