@@ -23,6 +23,38 @@ VALUES ('2019.02.06T19:47:59', 'Маска Oakley Canopy', '5', '6', 'Маска
 
 /*Добавляю ставки*/
 INSERT INTO bet (bet_date, amount_to_buy, user_id, lot_id)
-VALUES ('2019.02.03', '11000', '1', '1');
+VALUES ('2019.01.03', '11000', '1', '1');
 INSERT INTO bet (bet_date, amount_to_buy, user_id, lot_id)
 VALUES ('2019.02.03', '15000', '2', '1');
+
+/*Получаю все категории*/
+SELECT * FROM category;
+
+/*
+  Получить самые новые, открытые лоты.
+  Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, название категории;
+*/
+SELECT lot.name, description, start_cost, image, category.name
+FROM lot
+JOIN category
+ON category.id = lot.category_id
+ORDER BY time_of_create DESC;
+
+/*Показать лот по его id. Получите также название категории, к которой принадлежит лот*/
+SELECT *
+FROM lot
+JOIN category
+ON category.id = lot.category_id
+WHERE lot.id = 3;
+
+/*Обновить название лота по его идентификатору*/
+UPDATE lot
+SET name = 'Обновленное имя'
+WHERE id = 5;
+
+/*Получить список самых свежих ставок для лота по его идентификатору*/
+SELECT *
+FROM lot
+JOIN bet
+ON bet.lot_id = lot.id
+ORDER BY bet_date DESC;
