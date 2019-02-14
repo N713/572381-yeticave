@@ -47,13 +47,13 @@
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <?php for ($i = 0; $i < count($categories); $i++): ?>
+            <?php foreach ($categories as $category): ?>
                 <li class="nav__item">
-                    <?php if(isset($categories[$i])): ?>
-                        <a href="pages/all-lots.html"><?= strip_tags($categories[$i]); ?></a>
+                    <?php if(isset($category['name'])): ?>
+                        <a href="pages/all-lots.html"><?= strip_tags($category['name']); ?></a>
                     <?php endif; ?>
                 </li>
-            <?php endfor; ?>
+            <?php endforeach; ?>
         </ul>
     </nav>
     <div class="main-footer__bottom container">
