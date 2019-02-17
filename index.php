@@ -2,7 +2,14 @@
 date_default_timezone_set('Europe/Moscow');
 $is_auth = rand(0, 1);
 $user_name = 'Илья'; // укажите здесь ваше имя
-$connect = mysqli_connect('localhost', 'root', '', 'yeticave' );
+
+if(file_exists('config.php')) {
+    require_once 'config.php';
+} else {
+    require_once 'config.default.php';
+}
+
+$connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 if (!$connect) {
     print('Error: ' + mysqli_connect_error());
