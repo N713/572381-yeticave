@@ -20,7 +20,9 @@
             <li class="lots__item lot">
                 <div class="lot__image">
                     <?php if (isset($lot['image'])): ?>
-                        <img src="<?= strip_tags($lot['image']); ?>" width="350" height="260" alt="">
+                        <a href="lot.php">
+                            <img src="<?= strip_tags($lot['image']); ?>" width="350" height="260" alt="">
+                        </a>
                     <?php endif; ?>
                 </div>
                 <div class="lot__info">
