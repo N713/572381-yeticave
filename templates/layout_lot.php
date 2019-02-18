@@ -2,7 +2,13 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>DC Ply Mens 2016/2017 Snowboard</title>
+  <title>
+    <?php foreach($lot as $item): ?>
+        <?php if (isset($item['lot_name'])): ?>
+            <?= $item['lot_name']; ?>
+        <?endif; ?>
+    <?php endforeach; ?>
+  </title>
   <link href="../css/normalize.min.css" rel="stylesheet">
   <link href="../css/style.css" rel="stylesheet">
 </head>

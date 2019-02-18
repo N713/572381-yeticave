@@ -1,19 +1,34 @@
-<h2>DC Ply Mens 2016/2017 Snowboard</h2>
+<?php foreach($lot as $item): ?>
+    <h2>
+        <?php if (isset($item['lot_name'])): ?>
+            <?= strip_tags($item['lot_name']); ?>
+        <?php endif; ?>
+    </h2>
+<?php endforeach; ?>
 <div class="lot-item__content">
   <div class="lot-item__left">
-    <div class="lot-item__image">
-      <img src="img/lot-image.jpg" width="730" height="548" alt="Сноуборд">
-    </div>
-    <p class="lot-item__category">Категория: <span>Доски и лыжи</span></p>
-    <p class="lot-item__description">Легкий маневренный сноуборд, готовый дать жару в любом парке, растопив
-      снег
-      мощным щелчкоми четкими дугами. Стекловолокно Bi-Ax, уложенное в двух направлениях, наделяет этот
-      снаряд
-      отличной гибкостью и отзывчивостью, а симметричная геометрия в сочетании с классическим прогибом
-      кэмбер
-      позволит уверенно держать высокие скорости. А если к концу катального дня сил совсем не останется,
-      просто
-      посмотрите на Вашу доску и улыбнитесь, крутая графика от Шона Кливера еще никого не оставляла
-      равнодушным.</p>
+    <?php foreach($lot as $item): ?>
+        <div class="lot-item__image">
+            <?php if (isset($item['image'])): ?>
+                <img src="<?= strip_tags($item['image']); ?>" width="730" height="548" alt="Картинка">
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+    <p class="lot-item__category">Категория:
+        <?php foreach($lot as $item): ?>
+            <span>
+                <?php if (isset($item['category_name'])): ?>
+                    <?= strip_tags($item['category_name']); ?>
+                <?php endif; ?>
+            </span>
+        <?php endforeach; ?>
+    </p>
+    <?php foreach($lot as $item): ?>
+        <?php if (isset($item['description'])): ?>
+            <p class="lot-item__description">
+                <?= $item['description']; ?>
+            </p>
+        <?php endif; ?>
+    <?php endforeach; ?>
   </div>
 </div>

@@ -20,9 +20,11 @@
             <li class="lots__item lot">
                 <div class="lot__image">
                     <?php if (isset($lot['image'])): ?>
-                        <a href="lot.php">
-                            <img src="<?= strip_tags($lot['image']); ?>" width="350" height="260" alt="">
-                        </a>
+                        <?php if (isset($lot['lot_id'])): ?>
+                            <a href="lot.php?tab=<?= strip_tags($lot['lot_id']); ?>">
+                                <img src="<?= strip_tags($lot['image']); ?>" width="350" height="260" alt="">
+                            </a>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
                 <div class="lot__info">
@@ -31,7 +33,11 @@
                     <?php endif; ?>
                     <h3 class="lot__title">
                         <?php if(isset($lot['lot_name'])):?>
-                            <a class="text-link" href="pages/lot.html"><?= strip_tags($lot['lot_name']); ?></a>
+                            <?php if (isset($lot['lot_id'])): ?>
+                                <a class="text-link" href="lot.php?tab=<?= strip_tags($lot['lot_id']); ?>">
+                                    <?= strip_tags($lot['lot_name']); ?>
+                                </a>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </h3>
                     <div class="lot__state">

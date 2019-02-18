@@ -28,26 +28,41 @@ if (!$result) {
 
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+if (!isset($_GET['tab'])) {
+    print('Error!');
+    die;
+}
+
+$id = $_GET['tab'];
+
 $sql = 'SELECT lot.id AS lot_id, time_of_create, lot.name AS lot_name, category_id, author_id, description,
             image, start_cost, final_date, bet_step, category.name AS category_name
         FROM lot
         LEFT JOIN category
-        ON category.id = lot.category_id';
+        ON category.id = lot.category_id
+        WHERE lot.id = ' . $id .' ';
+
 $result = mysqli_query($connect, $sql);
 
-if ($result) {
-    $lot_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
+if (!$result) {
     print (mysqli_error($connect));
+    die;
 }
 
-require_once('functions.php');
-require_once('mysql_helper.php');
+$lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
+var_dump($lot);
 
-$page_content = include_template('lot.php', []);
+require_once('functions.php');
+
+$page_content = include_template('lot.php', [
+    'lot' => $lot,
+]);
+
 $layout_content = include_template('layout_lot.php', [
     'categories' => $categories,
     'content' => $page_content,
+    'lot' => $lot,
 ]);
 
 print($layout_content);
+

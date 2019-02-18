@@ -35,14 +35,14 @@ $sql = 'SELECT lot.id AS lot_id, time_of_create, lot.name AS lot_name, category_
         ON category.id = lot.category_id';
 $result = mysqli_query($connect, $sql);
 
-if ($result) {
-    $lot_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
+if (!$result) {
     print (mysqli_error($connect));
+    die;
 }
 
+$lot_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
 require_once('functions.php');
-require_once('mysql_helper.php');
 
 $page_content = include_template('index.php', [
     'lot_list' => $lot_list,
