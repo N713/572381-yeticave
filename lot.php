@@ -64,4 +64,3 @@ $layout_content = include_template('layout_lot.php', [
 ]);
 
 print($layout_content);
-
