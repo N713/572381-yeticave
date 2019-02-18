@@ -50,7 +50,6 @@ if (!$result) {
 }
 
 $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
-var_dump($lot);
 
 require_once('functions.php');
 
