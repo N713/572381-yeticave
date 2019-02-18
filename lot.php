@@ -63,4 +63,15 @@ $layout_content = include_template('layout_lot.php', [
     'lot' => $lot,
 ]);
 
+$current_id = '';
+
+foreach ($lot as $item) {
+    $current_id = $item['lot_id'];
+}
+
+if (!$current_id) {
+    http_response_code(404);
+    header('Location: 404.html');
+}
+
 print($layout_content);
