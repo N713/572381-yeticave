@@ -63,7 +63,7 @@
               <div class="lot-item__rate">
                 <span class="lot-item__amount">Текущая цена</span>
                 <?php foreach ($lot as $item): ?>
-                    <span class="lot-item__cost"><?= $item['start_cost']; ?></span>
+                    <span class="lot-item__cost"><?= strip_tags($item['start_cost']); ?></span>
                 <?php endforeach; ?>
               </div>
               <!--
