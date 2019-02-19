@@ -28,6 +28,8 @@ if (!$result) {
 
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+require_once('mysql_helper.php');
+
 if (!isset($_GET['tab'])) {
     print('Error!');
     die;
@@ -40,15 +42,11 @@ $sql = 'SELECT lot.id AS lot_id, time_of_create, lot.name AS lot_name, category_
         FROM lot
         LEFT JOIN category
         ON category.id = lot.category_id
-        WHERE lot.id = ' . $id .' ';
+        WHERE lot.id = ? ';
 
-$result = mysqli_query($connect, $sql);
-
-if (!$result) {
-    print (mysqli_error($connect));
-    die;
-}
-
+$stmt = db_get_prepare_stmt($connect, $sql, [$id]);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 require_once('functions.php');
