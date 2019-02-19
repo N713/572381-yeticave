@@ -18,17 +18,9 @@ if (!$connect) {
 
 mysqli_set_charset($connect, 'utf8');
 
-$sql = 'SELECT id, name FROM category';
-$result = mysqli_query($connect, $sql);
+require_once('functions.php');
 
-if (!$result) {
-    print (mysqli_error($connect));
-    die;
-}
-
-$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-require_once('mysql_helper.php');
+$categories = get_categories($connect);
 
 if (!isset($_GET['tab'])) {
     print('Error!');
@@ -36,6 +28,8 @@ if (!isset($_GET['tab'])) {
 }
 
 $id = $_GET['tab'];
+
+require_once('mysql_helper.php');
 
 $sql = 'SELECT lot.id AS lot_id, time_of_create, lot.name AS lot_name, category_id, author_id, description,
             image, start_cost, final_date, bet_step, category.name AS category_name
@@ -48,8 +42,6 @@ $stmt = db_get_prepare_stmt($connect, $sql, [$id]);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-require_once('functions.php');
 
 $page_content = include_template('lot.php', [
     'lot' => $lot,

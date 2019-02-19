@@ -59,3 +59,24 @@
 
         return $time;
     }
+
+    /**
+     * Функция для получения категорий лотов
+     *
+     *@param $connect - ресурс подключения
+     *
+     *@return array
+     */
+    function get_categories($connect) {
+        $sql = 'SELECT id, name FROM category';
+        $result = mysqli_query($connect, $sql);
+
+        if (!$result) {
+            print (mysqli_error($connect));
+            die;
+        }
+
+        $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        return $categories;
+    }
