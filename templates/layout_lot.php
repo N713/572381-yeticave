@@ -54,7 +54,6 @@
     </nav>
     <section class="lot-item container">
       <?= $content; ?>
-        <!-- По заданию показывать не нужно, но потом пригодится, я думаю, потому решил закомментировать, а не удалить разметку
         <div class="lot-item__right">
           <div class="lot-item__state">
             <div class="lot-item__timer timer">
@@ -63,8 +62,11 @@
             <div class="lot-item__cost-state">
               <div class="lot-item__rate">
                 <span class="lot-item__amount">Текущая цена</span>
-                <span class="lot-item__cost">10 999</span>
+                <?php foreach ($lot as $item): ?>
+                    <span class="lot-item__cost"><?= $item['start_cost']; ?></span>
+                <?php endforeach; ?>
               </div>
+              <!--
               <div class="lot-item__min-cost">
                 Мин. ставка <span>12 000 р</span>
               </div>
