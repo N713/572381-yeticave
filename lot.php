@@ -18,43 +18,50 @@ if (!$connect) {
 
 mysqli_set_charset($connect, 'utf8');
 
-$sql = 'SELECT id, name FROM category';
-$result = mysqli_query($connect, $sql);
+require_once('functions.php');
 
-if (!$result) {
-    print (mysqli_error($connect));
+$categories = get_categories($connect);
+
+if (!isset($_GET['tab'])) {
+    print('Error!');
     die;
 }
 
-$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$id = $_GET['tab'];
+
+require_once('mysql_helper.php');
 
 $sql = 'SELECT lot.id AS lot_id, time_of_create, lot.name AS lot_name, category_id, author_id, description,
             image, start_cost, final_date, bet_step, category.name AS category_name
         FROM lot
         LEFT JOIN category
-        ON category.id = lot.category_id';
-$result = mysqli_query($connect, $sql);
+        ON category.id = lot.category_id
+        WHERE lot.id = ? ';
 
-if (!$result) {
-    print (mysqli_error($connect));
-    die;
+$stmt = db_get_prepare_stmt($connect, $sql, [$id]);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+$page_content = include_template('lot.php', [
+    'lot' => $lot,
+]);
+
+$layout_content = include_template('layout_lot.php', [
+    'categories' => $categories,
+    'content' => $page_content,
+    'lot' => $lot,
+]);
+
+$current_id = '';
+
+foreach ($lot as $item) {
+    $current_id = $item['lot_id'];
 }
 
-$lot_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-require_once('functions.php');
-
-$page_content = include_template('index.php', [
-    'lot_list' => $lot_list,
-    'categories' => $categories,
-]);
-
-$layout_content = include_template('layout.php', [
-    'content' => $page_content,
-    'page_name' => 'Главная',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'categories' => $categories,
-]);
+if (!$current_id) {
+    http_response_code(404);
+    header('Location: 404.html');
+}
 
 print($layout_content);
