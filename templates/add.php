@@ -1,9 +1,10 @@
-<form class="form form--add-lot container form--invalid" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
+<form class="form form--add-lot container <?= $form_name; ?>" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
   <h2>Добавление лота</h2>
   <div class="form__container-two">
-    <div class="form__item form__item--invalid"> <!-- form__item--invalid -->
+    <?php $classname = isset($errors[0]) ? "form__item--invalid" : ""; ?>
+    <div class="form__item <?= $classname; ?>"> <!-- form__item--invalid -->
       <label for="lot-name">Наименование</label>
-      <input id="lot-name" type="text" name="name" placeholder="Введите наименование лота" required>
+      <input id="lot-name" type="text" name="name" placeholder="Введите наименование лота">
       <span class="form__error">Введите наименование лота</span>
     </div>
     <div class="form__item">
@@ -56,6 +57,11 @@
       <span class="form__error">Введите дату завершения торгов</span>
     </div>
   </div>
-  <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+  <?php if (isset($errors)): ?>
+    <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+    <?php foreach($errors as $error => $value): ?>
+      <span class="form__error form__error--bottom">Не заполнено поле: <?= $vocabulary[$value]; ?></span>
+    <?php endforeach; ?>
+  <?php endif; ?>
   <button type="submit" class="button">Добавить лот</button>
 </form>
