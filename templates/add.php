@@ -1,4 +1,4 @@
-<form class="form form--add-lot container form--invalid" action="add.php" method="post"> <!-- form--invalid -->
+<form class="form form--add-lot container form--invalid" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
   <h2>Добавление лота</h2>
   <div class="form__container-two">
     <div class="form__item form__item--invalid"> <!-- form__item--invalid -->
@@ -12,7 +12,7 @@
         <option>Выберите категорию</option>
         <?php foreach ($categories as $category): ?>
           <?php if(isset($category['name'])): ?>
-              <option><?= strip_tags($category['name']); ?></option>
+              <option value="<?= strip_tags($category['id']); ?>"><?= strip_tags($category['name']); ?></option>
           <?php endif; ?>
         <?php endforeach; ?>
       </select>

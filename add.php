@@ -32,10 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $name = $_POST['name'];
         $category_id = $_POST['category'];
         $description = $_POST['description'];
-        $image = $_POST['image'];
+        $image = $_FILES['image']['name'];
         $start_cost = $_POST['start_cost'];
         $bet_step = $_POST['bet_step'];
         $final_date = $_POST['final_date'];
+
+        move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/img/'. $image);
+
+        $url = '/img/'. $image;
 
         $sql = 'INSERT INTO lot (time_of_create, name, category_id, author_id, description,
                                  image, start_cost, bet_step, final_date)
@@ -43,14 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $stmt = mysqli_prepare($connect, $sql);
         mysqli_stmt_bind_param($stmt, 'sissiis', $name, $category_id, $description,
-                                $image, $start_cost, $bet_step, $final_date);
+                                $url, $start_cost, $bet_step, $final_date);
         $res = mysqli_stmt_execute($stmt);
 
         if ($res) {
-
             $lot_id = mysqli_insert_id($connect);
             header("Location: lot.php?tab=" . $lot_id);
-
         } else {
             print('Error');
         }
