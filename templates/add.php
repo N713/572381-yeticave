@@ -8,7 +8,7 @@
       <input id="lot-name" type="text" name="name" placeholder="Введите наименование лота" value="<?= $name; ?>">
       <span class="form__error"><?= $errors['name'] ?? ''; ?></span>
     </div>
-    <?php $classname = isset($errors['name']) ? "form__item--invalid" : ""; ?>
+    <?php $classname = isset($errors['category']) ? "form__item--invalid" : ""; ?>
     <div class="form__item <?= $classname; ?>">
       <label for="category">Категория</label>
         <select id="category" name="category">
