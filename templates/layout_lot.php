@@ -6,7 +6,7 @@
     <?php foreach($lot as $item): ?>
         <?php if (isset($item['lot_name'])): ?>
             <?= $item['lot_name']; ?>
-        <?endif; ?>
+        <?php endif; ?>
     <?php endforeach; ?>
   </title>
   <link href="../css/normalize.min.css" rel="stylesheet">
