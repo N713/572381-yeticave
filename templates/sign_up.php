@@ -1,24 +1,33 @@
-<form class="form container" action="https://echo.htmlacademy.ru" method="post"> <!-- form--invalid -->
+<form class="form container" action="sign_up.php" method="post"> <!-- form--invalid -->
+  <?php var_dump($errors); ?>
   <h2>Регистрация нового аккаунта</h2>
-  <div class="form__item"> <!-- form__item--invalid -->
+  <?php $classname = isset($errors['email']) ? "form__item--invalid" : ""; ?>
+  <div class="form__item <?= $classname; ?>"> <!-- form__item--invalid -->
     <label for="email">E-mail*</label>
-    <input id="email" type="text" name="email" placeholder="Введите e-mail" required>
-    <span class="form__error">Введите e-mail</span>
+    <?php $email = $fields['email'] ?? ''; ?>
+    <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?= $email; ?>">
+    <span class="form__error"><?= $errors['email'] ?? ''; ?></span>
   </div>
-  <div class="form__item">
+  <?php $classname = isset($errors['password']) ? "form__item--invalid" : ""; ?>
+  <div class="form__item <?= $classname; ?>">
     <label for="password">Пароль*</label>
-    <input id="password" type="text" name="password" placeholder="Введите пароль" required>
-    <span class="form__error">Введите пароль</span>
+    <?php $password = $fields['password'] ?? ''; ?>
+    <input id="password" type="text" name="password" placeholder="Введите пароль" value="<?= $password; ?>">
+    <span class="form__error"><?= $errors['email'] ?? ''; ?></span>
   </div>
-  <div class="form__item">
+  <?php $classname = isset($errors['name']) ? "form__item--invalid" : ""; ?>
+  <div class="form__item <?= $classname; ?>">
     <label for="name">Имя*</label>
-    <input id="name" type="text" name="name" placeholder="Введите имя" required>
-    <span class="form__error">Введите имя</span>
+    <?php $name = $fields['name'] ?? ''; ?>
+    <input id="name" type="text" name="name" placeholder="Введите имя" value="<?= $name; ?>">
+    <span class="form__error"><?= $errors['email'] ?? ''; ?></span>
   </div>
-  <div class="form__item">
+  <?php $classname = isset($errors['message']) ? "form__item--invalid" : ""; ?>
+  <div class="form__item <?= $classname; ?>">
     <label for="message">Контактные данные*</label>
-    <textarea id="message" name="message" placeholder="Напишите как с вами связаться" required></textarea>
-    <span class="form__error">Напишите как с вами связаться</span>
+    <?php $message = $fields['message'] ?? ''; ?>
+    <textarea id="message" name="message" placeholder="Напишите как с вами связаться"><?= $message; ?></textarea>
+    <span class="form__error"><?= $errors['message'] ?? ''; ?></span>
   </div>
   <div class="form__item form__item--file form__item--last">
     <label>Аватар</label>
@@ -29,7 +38,7 @@
       </div>
     </div>
     <div class="form__input-file">
-      <input class="visually-hidden" type="file" id="photo2" value="">
+      <input class="visually-hidden" type="file" id="photo2" value="" name="image">
       <label for="photo2">
         <span>+ Добавить</span>
       </label>
