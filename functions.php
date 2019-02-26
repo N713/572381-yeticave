@@ -88,16 +88,16 @@
      *
      *@param $email - почта
      *
-     *@return int
+     *@return boolean
     */
     function is_email_available ($link, $email) {
         $email = mysqli_real_escape_string($link, $email);
         $sql = "SELECT id FROM user WHERE email = '$email'";
         $res = mysqli_query($link, $sql);
-        $is_available = 0;
+        $is_available = false;
 
         if (mysqli_num_rows($res) > 0) {
-            $is_available = 1;
+            $is_available = true;
         }
 
         return $is_available;
@@ -108,7 +108,7 @@
      *
      *@param $image - изображение
      *
-     *@return int
+     *@return boolean
     */
     function is_valid_image ($image) {
 
@@ -116,8 +116,9 @@
             mime_content_type($image) !== 'image/png' or
             mime_content_type($image) !== 'image/jpeg'
         ) {
-            return 0;
+
+            return false;
         }
 
-        return 1;
+        return true;
     }

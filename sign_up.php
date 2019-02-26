@@ -49,12 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if(is_email_available($connect, $fields['email'])) {
-        $errors += ['email_busy' => 'Email занят'];
+    if (!empty($fields['email']) and !filter_var($fields['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors += ['email' => 'Email некорректен'];
     }
 
-    if (!filter_var($fields['email'], FILTER_VALIDATE_EMAIL) and !empty($fields['email'])) {
-        $errors += ['email_validate' => 'Email некорректен'];
+    if (!empty($fields['email']) and filter_var($fields['email'], FILTER_VALIDATE_EMAIL)) {
+        if (is_email_available($connect, $fields['email'])) {
+            $errors += ['email' => 'Email занят'];
+        }
     }
 
     if (!empty($fields['image'])) {
