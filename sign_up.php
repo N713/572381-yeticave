@@ -29,11 +29,12 @@ $fields = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $fields = [
-        'email'    => $_POST['email'] ?? null,
-        'password' => $_POST['password'] ?? null,
-        'name'     => $_POST['name'] ?? null,
-        'message'  => $_POST['message'] ?? null,
-        'image'    => $_POST['image'] ?? null,
+        'email'       => $_POST['email'] ?? null,
+        'password'    => $_POST['password'] ?? null,
+        'name'        => $_POST['name'] ?? null,
+        'message'     => $_POST['message'] ?? null,
+        'image'       => $_FILES['image']['name'] ?? null,
+        'image_path'  => $_FILES['image']['tmp_name'] ?? null,
     ];
 
     $not_empty = [
@@ -60,13 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!empty($fields['image'])) {
-        $format = is_valid_image($fields['image']);
-        if (!$format) {
+        $format = is_valid_image($fields['image_path']);
+        if ($format === false) {
             $errors += ['image_format' => 'Загрузите изображение в формате jpeg/png'];
         }
     }
 
+    var_dump($_FILES);
+
     if (count($errors) === 0) {
+
+        $url = '/upload/' . $fields['image'];
+        move_uploaded_file($fields['image_path'], __DIR__ . $url);
 
         $password = password_hash($fields['password'], PASSWORD_DEFAULT);
 
@@ -80,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $password,
             $fields['name'],
             $fields['message'],
-            $fields['image']
+            $url
         );
 
         mysqli_stmt_execute($stmt);

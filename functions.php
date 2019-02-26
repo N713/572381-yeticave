@@ -113,12 +113,12 @@
     function is_valid_image ($image) {
 
         if (
-            mime_content_type($image) !== 'image/png' or
-            mime_content_type($image) !== 'image/jpeg'
+            mime_content_type($image) === 'image/png' or
+            mime_content_type($image) === 'image/jpeg'
         ) {
 
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
