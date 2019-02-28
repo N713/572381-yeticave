@@ -80,3 +80,45 @@
 
         return $categories;
     }
+
+    /**
+     * Функция проверки email на занятость
+     *
+     *@param $link - ресурс подключения
+     *
+     *@param $email - почта
+     *
+     *@return boolean
+    */
+    function is_email_available ($link, $email) {
+        $email = mysqli_real_escape_string($link, $email);
+        $sql = "SELECT id FROM user WHERE email = '$email'";
+        $res = mysqli_query($link, $sql);
+        $is_available = false;
+
+        if (mysqli_num_rows($res) > 0) {
+            $is_available = true;
+        }
+
+        return $is_available;
+    }
+
+    /**
+     *Проверяет изображение на разрешенные форматы
+     *
+     *@param $image - изображение
+     *
+     *@return boolean
+    */
+    function is_valid_image ($image) {
+
+        if (
+            mime_content_type($image) === 'image/png' or
+            mime_content_type($image) === 'image/jpeg'
+        ) {
+
+            return true;
+        }
+
+        return false;
+    }
