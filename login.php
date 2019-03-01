@@ -47,6 +47,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($fields['email']) and !filter_var($fields['email'], FILTER_VALIDATE_EMAIL)) {
         $errors += ['email' => 'Email некорректен'];
     }
+
+    if (!empty($fields['email']) and filter_var($fields['email'], FILTER_VALIDATE_EMAIL)) {
+        $sql = "SELECT id, registrated_date, email, name,
+                        password, avatar, contact
+                FROM user
+                WHERE email = ? ";
+        $stmt = mysqli_prepare($connect, $sql);
+        mysqli_stmt_bind_param(
+            $stmt,
+            's',
+            $fields['email']
+        );
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
 }
 
 $page_content = include_template(
