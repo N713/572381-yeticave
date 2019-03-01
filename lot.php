@@ -18,6 +18,8 @@ if (!$connect) {
 
 mysqli_set_charset($connect, 'utf8');
 
+session_start();
+
 require_once('functions.php');
 
 $categories = get_categories($connect);
@@ -43,14 +45,20 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+if (isset($_SESSION)) {
+    foreach ($_SESSION as $user) {
+    }
+}
+
 $page_content = include_template('lot.php', [
-    'lot' => $lot,
+    'lot'        => $lot,
 ]);
 
 $layout_content = include_template('layout_lot.php', [
     'categories' => $categories,
-    'content' => $page_content,
-    'lot' => $lot,
+    'content'    => $page_content,
+    'lot'        => $lot,
+    'user'       => $user
 ]);
 
 $current_id = '';

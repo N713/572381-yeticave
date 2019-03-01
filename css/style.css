@@ -282,6 +282,7 @@ main.container {
   color: #879296;
   font-size: 13px;
   font-weight: 400;
+  cursor: pointer;
 }
 
 .user-menu__logged a:hover {

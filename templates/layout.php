@@ -22,10 +22,11 @@
         <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
 
         <nav class="user-menu">
-            <?php if($is_auth === 1): ?>
-              <div class="user-menu__logged">
-                <p><?= strip_tags($user_name); ?></p>
-              </div>
+            <?php if($user): ?>
+                <div class="user-menu__logged">
+                    <p><?= strip_tags($user['name']); ?></p>
+                    <a href="logout.php">Выход</a>
+                </div>
             <?php else: ?>
                 <ul class="user-menu__list">
                     <li class="user-menu__item">

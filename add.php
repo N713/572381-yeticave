@@ -18,6 +18,8 @@ if (!$connect) {
 
 mysqli_set_charset($connect, 'utf8');
 
+session_start();
+
 require_once('functions.php');
 require_once('mysql_helper.php');
 
@@ -94,6 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+if (isset($_SESSION)) {
+    foreach ($_SESSION as $user) {
+    }
+}
+
 $page_content = include_template(
     'add.php',
     [
@@ -108,6 +115,7 @@ $layout_content = include_template(
     [
         'content'    => $page_content,
         'categories' => $categories,
+        'user'       => $user
     ]
 );
 

@@ -18,6 +18,8 @@ if (!$connect) {
 
 mysqli_set_charset($connect, 'utf8');
 
+session_start();
+
 $sql = 'SELECT id, name FROM category';
 $result = mysqli_query($connect, $sql);
 
@@ -44,17 +46,23 @@ $lot_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 require_once('functions.php');
 
+if (isset($_SESSION)) {
+    foreach ($_SESSION as $user) {
+    }
+}
+
 $page_content = include_template('index.php', [
-    'lot_list' => $lot_list,
-    'categories' => $categories,
+    'lot_list'      => $lot_list,
+    'categories'    => $categories,
 ]);
 
 $layout_content = include_template('layout.php', [
-    'content' => $page_content,
-    'page_name' => 'Главная',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'categories' => $categories,
+    'content'       => $page_content,
+    'page_name'     => 'Главная',
+    'is_auth'       => $is_auth,
+    'user_name'     => $user_name,
+    'categories'    => $categories,
+    'user'          => $user
 ]);
 
 print($layout_content);

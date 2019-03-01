@@ -18,6 +18,8 @@ if (!$connect) {
 
 mysqli_set_charset($connect, 'utf8');
 
+session_start();
+
 require_once('functions.php');
 require_once('mysql_helper.php');
 
@@ -25,6 +27,7 @@ $categories = get_categories($connect);
 
 $errors = [];
 $fields = [];
+$user   = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -63,6 +66,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_stmt_get_result($stmt);
         $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
+
+    foreach ($user as $user) {}
+
+    if (!$user) {
+        $errors['email'] = 'Такой пользователь не найден';
+    }
+
+    if ($user and !count($errors)) {
+        $password = password_verify($fields['password'], $user['password']);
+    }
+
+    if ($user and !count($errors) and !$password) {
+        $errors['password'] = 'Вы ввели неверный пароль';
+    }
+
+    if ($user and !count($errors) and $password) {
+        $_SESSION['user'] = $user;
+        header('Location: index.php');
+    }
 }
 
 $page_content = include_template(
@@ -78,6 +100,7 @@ $layout_content = include_template(
     [
         'content'    => $page_content,
         'categories' => $categories,
+        'user'       => $user,
     ]
 );
 
