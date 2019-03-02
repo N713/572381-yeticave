@@ -23,6 +23,7 @@ session_start();
 require_once('functions.php');
 
 $categories = get_categories($connect);
+$user = [];
 
 if (!isset($_GET['tab'])) {
     print('Error!');

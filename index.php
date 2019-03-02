@@ -28,6 +28,7 @@ if (!$result) {
     die;
 }
 
+$user = [];
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $sql = 'SELECT lot.id AS lot_id, time_of_create, lot.name AS lot_name, category_id, author_id, description,

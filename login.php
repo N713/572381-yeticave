@@ -28,6 +28,7 @@ $categories = get_categories($connect);
 $errors = [];
 $fields = [];
 $user   = [];
+$password = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -69,12 +70,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     foreach ($user as $user) {}
 
-    if (!$user) {
+    if (!$user and !count($errors)) {
         $errors['email'] = 'Такой пользователь не найден';
     }
 
     if ($user and !count($errors)) {
         $password = password_verify($fields['password'], $user['password']);
+    }
+
+    if (!$user and !$password) {
+        $errors['password'] = 'Вы ввели неверный пароль';
     }
 
     if ($user and !count($errors) and !$password) {

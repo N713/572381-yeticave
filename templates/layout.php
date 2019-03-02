@@ -23,6 +23,9 @@
 
         <nav class="user-menu">
             <?php if($user): ?>
+                <div class ="user-menu__image">
+                    <img src="<?= strip_tags($user['avatar']); ?>">
+                </div>
                 <div class="user-menu__logged">
                     <p><?= strip_tags($user['name']); ?></p>
                     <a href="logout.php">Выход</a>

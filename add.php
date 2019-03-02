@@ -27,6 +27,7 @@ $categories = get_categories($connect);
 
 $errors = [];
 $lot    = [];
+$user = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -98,7 +99,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (isset($_SESSION)) {
     foreach ($_SESSION as $user) {
-    }
+}
+
+if (!isset($_SESSION))
+    http_response_code(403);
+    header('Location: 404.php');
 }
 
 $page_content = include_template(
