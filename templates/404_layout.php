@@ -35,7 +35,7 @@
                         <?php }; ?>
                     </div>
                 <?php }; ?>
-                <?php if(is_array($user) and $user === []){ ?>
+                <?php if(!is_array($user) or $user === []){ ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
                           <a href="sign_up.php">Регистрация</a>
