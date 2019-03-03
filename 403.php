@@ -28,12 +28,12 @@ if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'] ?? [];
 }
 
-$page_content = include_template('404.php', [
+$page_content = include_template('403.php', [
     'categories'    => $categories,
     'user'          => $user
 ]);
 
-$layout_content = include_template('404_layout.php', [
+$layout_content = include_template('403_layout.php', [
     'content'       => $page_content,
     'categories'    => $categories,
     'user'          => $user

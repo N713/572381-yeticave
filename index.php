@@ -1,7 +1,5 @@
 <?php
 date_default_timezone_set('Europe/Moscow');
-$is_auth = rand(0, 1);
-$user_name = 'Илья'; // укажите здесь ваше имя
 
 if(file_exists('config.php')) {
     require_once 'config.php';
@@ -12,7 +10,7 @@ if(file_exists('config.php')) {
 $connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 if (!$connect) {
-    print('Error: ' + mysqli_connect_error());
+    print('Error: ' . mysqli_connect_error());
     die;
 }
 
@@ -47,9 +45,8 @@ $lot_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 require_once('functions.php');
 
-if (isset($_SESSION)) {
-    foreach ($_SESSION as $user) {
-    }
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'] ?? [];
 }
 
 $page_content = include_template('index.php', [
@@ -60,8 +57,6 @@ $page_content = include_template('index.php', [
 $layout_content = include_template('layout.php', [
     'content'       => $page_content,
     'page_name'     => 'Главная',
-    'is_auth'       => $is_auth,
-    'user_name'     => $user_name,
     'categories'    => $categories,
     'user'          => $user
 ]);

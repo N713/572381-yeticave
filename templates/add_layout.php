@@ -22,12 +22,20 @@
     </form>
     <a class="main-header__add-lot button" href="#">Добавить лот</a>
     <nav class="user-menu">
-        <?php if($user): ?>
-            <div class="user-menu__logged">
-                <p><?= strip_tags($user['name']); ?></p>
-                <a href="logout.php">Выход</a>
+        <?php if(is_array($user) and $user !== []){ ?>
+            <div class ="user-menu__image">
+                <?php if(isset($user['avatar'])) { ?>
+                    <img src="<?= strip_tags($user['avatar']); ?>">
+                <?php }; ?>
             </div>
-        <?php else: ?>
+            <div class="user-menu__logged">
+                <?php if(isset($user['name'])) { ?>
+                    <p><?= strip_tags($user['name']); ?></p>
+                    <a href="logout.php">Выход</a>
+                <?php }; ?>
+            </div>
+        <?php }; ?>
+        <?php if(!is_array($user) or $user === []){ ?>
             <ul class="user-menu__list">
                 <li class="user-menu__item">
                   <a href="sign_up.php">Регистрация</a>
@@ -36,7 +44,7 @@
                   <a href="login.php">Вход</a>
                 </li>
             </ul>
-        <?php endif; ?>
+        <?php }; ?>
     </nav>
   </div>
 </header>
