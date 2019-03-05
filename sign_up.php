@@ -25,6 +25,7 @@ $categories = get_categories($connect);
 
 $errors = [];
 $fields = [];
+$user   = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -71,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (count($errors) === 0) {
 
-        if (isset($fields['image'])) {
+        if ($fields['image']) {
             $url = '/img/' . $fields['image'];
             move_uploaded_file($fields['image_path'], __DIR__ . $url);
         }
@@ -110,6 +111,7 @@ $layout_content = include_template(
     [
         'content'    => $page_content,
         'categories' => $categories,
+        'user'       => $user
     ]
 );
 

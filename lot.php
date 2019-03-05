@@ -68,7 +68,7 @@ foreach ($lot as $item) {
 
 if (!$current_id) {
     http_response_code(404);
-    header('Location: 404.html');
+    header('Location: 404.php');
 }
 
 print($layout_content);
