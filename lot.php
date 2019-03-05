@@ -18,10 +18,11 @@ mysqli_set_charset($connect, 'utf8');
 
 session_start();
 
+$user = $_SESSION['user'] ?? [];
+
 require_once('functions.php');
 
 $categories = get_categories($connect);
-$user = [];
 
 if (!isset($_GET['tab'])) {
     print('Error!');
@@ -44,31 +45,30 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-if (isset($_SESSION)) {
-    foreach ($_SESSION as $user) {
-    }
+$current_id = '';
+$lot_name = '';
+
+foreach ($lot as $item) {
+    $current_id = $item['lot_id'];
+    $lot_name = $item['lot_name'];
 }
 
 $page_content = include_template('lot.php', [
     'lot'        => $lot,
 ]);
 
-$layout_content = include_template('layout_lot.php', [
+$layout_content = include_template('layout.php', [
     'categories' => $categories,
     'content'    => $page_content,
     'lot'        => $lot,
-    'user'       => $user
+    'user'       => $user,
+    'page_name'  => $lot_name
 ]);
-
-$current_id = '';
-
-foreach ($lot as $item) {
-    $current_id = $item['lot_id'];
-}
 
 if (!$current_id) {
     http_response_code(404);
     header('Location: 404.php');
+    exit();
 }
 
 print($layout_content);

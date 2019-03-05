@@ -18,6 +18,8 @@ mysqli_set_charset($connect, 'utf8');
 
 session_start();
 
+$user = $_SESSION['user'] ?? [];
+
 require_once('functions.php');
 require_once('mysql_helper.php');
 
@@ -25,13 +27,11 @@ $categories = get_categories($connect);
 
 $errors = [];
 $lot    = [];
-$user = [];
 
-if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'] ?? [];
-} else {
+if ($user === []) {
     http_response_code(403);
     header('Location: 403.php');
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -74,6 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    if (isset($_FILES['image']['error']) && $_FILES['image']['error'] === 1) {
+        $errors += ['image' => 'Произошла ошибка при загрузке'];
+    } else if (!empty($fields['image'])) {
+        $format = is_valid_image($fields['image_path']);
+        if ($format === false) {
+            $errors += ['image' => 'Загрузите изображение в формате jpeg/png'];
+        }
+    }
+
     if (count($errors) === 0) {
 
         $url = '/img/'.$lot['image'];
@@ -99,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $lot_id = mysqli_insert_id($connect);
         header('Location: lot.php?tab='.$lot_id);
+        exit();
     }
 }
 
@@ -112,11 +122,12 @@ $page_content = include_template(
 );
 
 $layout_content = include_template(
-    'add_layout.php',
+    'layout.php',
     [
         'content'    => $page_content,
         'categories' => $categories,
-        'user'       => $user
+        'user'       => $user,
+        'page_name'  => 'Добавление лота'
     ]
 );
 

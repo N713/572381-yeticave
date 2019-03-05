@@ -18,6 +18,8 @@ mysqli_set_charset($connect, 'utf8');
 
 session_start();
 
+$user = $_SESSION['user'] ?? [];
+
 $sql = 'SELECT id, name FROM category';
 $result = mysqli_query($connect, $sql);
 
@@ -26,7 +28,6 @@ if (!$result) {
     die;
 }
 
-$user = [];
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $sql = 'SELECT lot.id AS lot_id, time_of_create, lot.name AS lot_name, category_id, author_id, description,
@@ -44,10 +45,6 @@ if (!$result) {
 $lot_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 require_once('functions.php');
-
-if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'] ?? [];
-}
 
 $page_content = include_template('index.php', [
     'lot_list'      => $lot_list,

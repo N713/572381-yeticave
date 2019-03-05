@@ -87,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user and !count($errors) and $password) {
         $_SESSION['user'] = $user;
         header('Location: index.php');
+        exit();
     }
 }
 
@@ -99,11 +100,12 @@ $page_content = include_template(
 );
 
 $layout_content = include_template(
-    'login_layout.php',
+    'layout.php',
     [
         'content'    => $page_content,
         'categories' => $categories,
         'user'       => $user,
+        'page_name'  => 'Вход'
     ]
 );
 

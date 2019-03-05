@@ -18,25 +18,23 @@ mysqli_set_charset($connect, 'utf8');
 
 session_start();
 
+$user = $_SESSION['user'] ?? [];
+
 require_once('functions.php');
 require_once('mysql_helper.php');
 
-$user = [];
 $categories = get_categories($connect);
-
-if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'] ?? [];
-}
 
 $page_content = include_template('403.php', [
     'categories'    => $categories,
     'user'          => $user
 ]);
 
-$layout_content = include_template('403_layout.php', [
+$layout_content = include_template('layout.php', [
     'content'       => $page_content,
     'categories'    => $categories,
-    'user'          => $user
+    'user'          => $user,
+    'page_name'     => 'Ошибка: 403'
 ]);
 
 print($layout_content);
