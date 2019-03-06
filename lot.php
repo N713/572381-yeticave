@@ -89,21 +89,21 @@ $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $bets = [
-        'bet_amount' => $_POST['cost'] ?? null,
+        'cost'        => $_POST['cost'] ?? null,
     ];
 
-    $not_empty = [
-        'bet_amount'
+    $notEmpty = [
+        'cost'
     ];
 
-    foreach ($not_empty as $field) {
+    foreach ($notEmpty as $field) {
         if (empty($bets[$field])) {
             $errors[$field] = 'Поле не должно быть пустым';
         }
     }
 
     $numeric = [
-        'bet_amount'
+        'cost'
     ];
 
     foreach ($numeric as $field) {
@@ -111,14 +111,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[$field] = 'Поле должно быть положительным числом';
         }
     }
-}
 
-$lot_bet = include_template('lot_bet.php', [
-    'user'           => $user,
-    'current_cost'   => $current_cost,
-    'bet_min'        => $bet_min,
-    'timer'          => $timer
-]);
+    if (count($errors) === 0) {
+        $sql = 'INSERT INTO bet (bet_date, amount_to_buy, user_id, lot_id)
+                VALUES (NOW(), ?, ?, ? )';
+        $stmt = mysqli_prepare($connect, $sql);
+        mysqli_stmt_bind_param(
+            $stmt,
+            'sii',
+            $bets['cost'],
+            $user['id'],
+            $current_id
+        );
+        mysqli_stmt_execute($stmt);
+    }
+}
 
 $lot_history = include_template('lot_history.php', [
 
@@ -127,8 +134,11 @@ $lot_history = include_template('lot_history.php', [
 $page_content = include_template('lot.php', [
     'lot'            => $lot,
     'user'           => $user,
-    'lot_bet'        => $lot_bet,
     'lot_history'    => $lot_history,
+    'current_cost'   => $current_cost,
+    'bet_min'        => $bet_min,
+    'timer'          => $timer,
+    'id'             => $id
 ]);
 
 $layout_content = include_template('layout.php', [
