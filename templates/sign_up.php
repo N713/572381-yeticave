@@ -28,7 +28,7 @@
     <textarea id="message" name="message" placeholder="Напишите как с вами связаться"><?= $message; ?></textarea>
     <span class="form__error"><?= $errors['message'] ?? ''; ?></span>
   </div>
-  <?php $classname = isset($errors['image_format']) ? "form__item--invalid" : ""; ?>
+  <?php $classname = isset($errors['image']) ? "form__item--invalid" : ""; ?>
   <div class="form__item form__item--file form__item--last <?= $classname; ?>">
     <label>Аватар</label>
     <div class="preview">
@@ -42,7 +42,7 @@
       <label for="photo2">
         <span>+ Добавить</span>
       </label>
-      <span class="form__error"><?= $errors['image_format'] ?? ''; ?></span>
+      <span class="form__error"><?= $errors['image'] ?? ''; ?></span>
     </div>
   </div>
   <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>

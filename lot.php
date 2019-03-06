@@ -1,7 +1,5 @@
 <?php
 date_default_timezone_set('Europe/Moscow');
-$is_auth = rand(0, 1);
-$user_name = 'Илья'; // укажите здесь ваше имя
 
 if(file_exists('config.php')) {
     require_once 'config.php';
@@ -12,11 +10,15 @@ if(file_exists('config.php')) {
 $connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 if (!$connect) {
-    print('Error: ' + mysqli_connect_error());
+    print('Error: ' . mysqli_connect_error());
     die;
 }
 
 mysqli_set_charset($connect, 'utf8');
+
+session_start();
+
+$user = $_SESSION['user'] ?? [];
 
 require_once('functions.php');
 
@@ -43,25 +45,31 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$page_content = include_template('lot.php', [
-    'lot' => $lot,
-]);
-
-$layout_content = include_template('layout_lot.php', [
-    'categories' => $categories,
-    'content' => $page_content,
-    'lot' => $lot,
-]);
-
 $current_id = '';
+$lot_name = '';
 
 foreach ($lot as $item) {
     $current_id = $item['lot_id'];
+    $lot_name = $item['lot_name'];
 }
+
+$page_content = include_template('lot.php', [
+    'lot'        => $lot,
+    'user'       => $user
+]);
+
+$layout_content = include_template('layout.php', [
+    'categories' => $categories,
+    'content'    => $page_content,
+    'lot'        => $lot,
+    'user'       => $user,
+    'page_name'  => $lot_name
+]);
 
 if (!$current_id) {
     http_response_code(404);
-    header('Location: 404.html');
+    header('Location: 404.php');
+    exit();
 }
 
 print($layout_content);

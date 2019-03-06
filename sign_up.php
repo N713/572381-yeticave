@@ -1,7 +1,5 @@
 <?php
 date_default_timezone_set('Europe/Moscow');
-$is_auth   = rand(0, 1);
-$user_name = 'Илья'; // укажите здесь ваше имя
 
 if (file_exists('config.php')) {
     require_once 'config.php';
@@ -12,11 +10,13 @@ if (file_exists('config.php')) {
 $connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 if (!$connect) {
-    print('Error: '.mysqli_connect_error());
+    print('Error: ' . mysqli_connect_error());
     die;
 }
 
 mysqli_set_charset($connect, 'utf8');
+
+session_start();
 
 require_once('functions.php');
 require_once('mysql_helper.php');
@@ -25,6 +25,7 @@ $categories = get_categories($connect);
 
 $errors = [];
 $fields = [];
+$user   = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -61,18 +62,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_FILES['image']['error']) && $_FILES['image']['error'] === 1) {
-        $errors += ['image_format' => 'Произошла ошибка при загрузке'];
+        $errors += ['image' => 'Произошла ошибка при загрузке'];
     } else if (!empty($fields['image'])) {
         $format = is_valid_image($fields['image_path']);
         if ($format === false) {
-            $errors += ['image_format' => 'Загрузите изображение в формате jpeg/png'];
+            $errors += ['image' => 'Загрузите изображение в формате jpeg/png'];
         }
     }
 
     if (count($errors) === 0) {
 
-        $url = '/img/' . $fields['image'];
-        move_uploaded_file($fields['image_path'], __DIR__ . $url);
+        if ($fields['image']) {
+            $url = '/img/' . $fields['image'];
+            move_uploaded_file($fields['image_path'], __DIR__ . $url);
+        }
 
         $password = password_hash($fields['password'], PASSWORD_DEFAULT);
 
@@ -91,7 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         mysqli_stmt_execute($stmt);
 
-        header('Location: index.php');
+        header('Location: login.php');
+        exit();
     }
 }
 
@@ -104,12 +108,13 @@ $page_content = include_template(
 );
 
 $layout_content = include_template(
-    'sign_up_layout.php',
+    'layout.php',
     [
         'content'    => $page_content,
         'categories' => $categories,
+        'user'       => $user,
+        'page_name'  => 'Регистрация'
     ]
 );
 
 print($layout_content);
-

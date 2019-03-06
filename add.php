@@ -1,7 +1,5 @@
 <?php
 date_default_timezone_set('Europe/Moscow');
-$is_auth   = rand(0, 1);
-$user_name = 'Илья'; // укажите здесь ваше имя
 
 if (file_exists('config.php')) {
     require_once 'config.php';
@@ -12,11 +10,15 @@ if (file_exists('config.php')) {
 $connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 if (!$connect) {
-    print('Error: '.mysqli_connect_error());
+    print('Error: ' . mysqli_connect_error());
     die;
 }
 
 mysqli_set_charset($connect, 'utf8');
+
+session_start();
+
+$user = $_SESSION['user'] ?? [];
 
 require_once('functions.php');
 require_once('mysql_helper.php');
@@ -25,6 +27,12 @@ $categories = get_categories($connect);
 
 $errors = [];
 $lot    = [];
+
+if ($user === []) {
+    http_response_code(403);
+    header('Location: 403.php');
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -66,6 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    if (isset($_FILES['image']['error']) && $_FILES['image']['error'] === 1) {
+        $errors += ['image' => 'Произошла ошибка при загрузке'];
+    } else if (!empty($fields['image'])) {
+        $format = is_valid_image($fields['image_path']);
+        if ($format === false) {
+            $errors += ['image' => 'Загрузите изображение в формате jpeg/png'];
+        }
+    }
+
     if (count($errors) === 0) {
 
         $url = '/img/'.$lot['image'];
@@ -91,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $lot_id = mysqli_insert_id($connect);
         header('Location: lot.php?tab='.$lot_id);
+        exit();
     }
 }
 
@@ -104,10 +122,12 @@ $page_content = include_template(
 );
 
 $layout_content = include_template(
-    'add_layout.php',
+    'layout.php',
     [
         'content'    => $page_content,
         'categories' => $categories,
+        'user'       => $user,
+        'page_name'  => 'Добавление лота'
     ]
 );
 
