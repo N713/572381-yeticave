@@ -55,6 +55,7 @@ foreach ($lot as $item) {
 
 $page_content = include_template('lot.php', [
     'lot'        => $lot,
+    'user'       => $user
 ]);
 
 $layout_content = include_template('layout.php', [
