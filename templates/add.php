@@ -1,4 +1,5 @@
-<form class="form form--add-lot container" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
+<?php $classname = count($errors) ? "form--invalid" : ""; ?>
+<form class="form form--add-lot container <?= $classname; ?>" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
   <h2>Добавление лота</h2>
   <div class="form__container-two">
     <?php $classname = isset($errors['name']) ? "form__item--invalid" : ""; ?>
@@ -74,6 +75,8 @@
       <span class="form__error"><?= $errors['final_date'] ?? ''; ?></span>
     </div>
   </div>
-  <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+  <?php if (count($errors)): ?>
+    <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+  <?php endif; ?>
   <button type="submit" class="button">Добавить лот</button>
 </form>

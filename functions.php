@@ -1,7 +1,7 @@
 <?php
     /**
-     *Функция для форматирования цены, а именно отделения разряда тысяч
-     *Пример: 14000 -> 14 000
+     * Функция для форматирования цены, а именно отделения разряда тысяч
+     * Пример: 14000 -> 14 000
      *
      * @param int $price
      *
@@ -17,14 +17,14 @@
     }
 
     /**
-     *Функция - шаблонизатор
+     * Функция - шаблонизатор
      *
-     *$name - имя файла - шаблона
-     *$data - данные в виде ассоциативного массива
+     * $name - имя файла - шаблона
+     * $data - данные в виде ассоциативного массива
      *
-     *@param string $name
+     * @param string $name
      *
-     *@param array $data
+     * @param array $data
      */
     function include_template($name, $data) {
         $name = 'templates/' . $name;
@@ -46,10 +46,12 @@
     /**
      * Функция для отсчета времени
      *
-     * @return string
+     * @param $time - финальная дата
+     *
+     * @return string $time - оставшееся время
      */
-    function to_countdown_time() {
-        $time_difference = strtotime('tomorrow') - time();
+    function to_countdown_time($time) {
+        $time_difference = strtotime($time) - time();
         $hours = floor( $time_difference / 3600 );
         $minutes = floor( ($time_difference % 3600) / 60 );
         $time = $hours . ':' .  $minutes;
@@ -63,9 +65,9 @@
     /**
      * Функция для получения категорий лотов
      *
-     *@param $connect - ресурс подключения
+     * @param $connect - ресурс подключения
      *
-     *@return array
+     * @return array
      */
     function get_categories($connect) {
         $sql = 'SELECT id, name FROM category';
@@ -84,11 +86,11 @@
     /**
      * Функция проверки email на занятость
      *
-     *@param $link - ресурс подключения
+     * @param $link - ресурс подключения
      *
-     *@param $email - почта
+     * @param $email - почта
      *
-     *@return boolean
+     * @return boolean
     */
     function is_email_available ($link, $email) {
         $email = mysqli_real_escape_string($link, $email);
@@ -104,11 +106,11 @@
     }
 
     /**
-     *Проверяет изображение на разрешенные форматы
+     * Проверяет изображение на разрешенные форматы
      *
-     *@param $image - изображение
+     * @param $image - изображение
      *
-     *@return boolean
+     * @return boolean
     */
     function is_valid_image ($image) {
 
@@ -121,4 +123,28 @@
         }
 
         return false;
+    }
+
+    /**
+     * Получает массив из запроса
+     * Использует подготовленное выражение
+     *
+     * @param $link - ресурс соединиения
+     *
+     * @param $sql  - sql запрос
+     *
+     * @param $name - имя будущего массива
+     *
+     * @param $variable - переменная для вставки в выражение
+     *
+     * @return array $name
+    */
+    function get_sql_array ($link, $sql, $name, $variable) {
+
+        $stmt = db_get_prepare_stmt($link, $sql, [$variable]);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $name = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        return $name;
     }
