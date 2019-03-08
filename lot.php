@@ -46,12 +46,14 @@ $current_id = '';
 $lot_name   = '';
 $start_cost = '';
 $final_date = '';
+$author_id  = '';
 
 foreach ($lot as $item) {
     $current_id = $item['lot_id'];
     $lot_name   = $item['lot_name'];
     $start_cost = $item['start_cost'];
     $final_date = $item['final_date'];
+    $author_id  = $item['author_id'];
 }
 
 $timer = to_countdown_time($final_date);
@@ -84,7 +86,39 @@ if ($bet_max['max_bet'] !== null) {
 
 $bet_min = $current_cost + $bet_step['bet_step'];
 
+$sql = 'SELECT user_id
+        FROM bet
+        WHERE lot_id = ? ';
+
+$user_bet = [];
+$user_bet = get_sql_array($connect, $sql, $user_bet, $current_id);
+$user_bet = $user_bet[0] ?? null;
+
 $errors = [];
+
+$not_author  = true;
+$none_bet    = true;
+
+if ($user) {
+
+    if ($author_id === $user['id']) {
+        $not_author = false;
+    }
+
+    if ($user_bet['user_id'] === $user['id']) {
+        $none_bet   = false;
+    }
+
+}
+
+$sql = 'SELECT bet_date, amount_to_buy, user_id, user.name AS user_name
+        FROM bet
+        LEFT JOIN user
+        ON bet.user_id = user.id
+        ORDER BY bet_date DESC';
+
+$result = mysqli_query($connect, $sql);
+$bet_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -112,6 +146,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    $cost = (int)$bets['cost'];
+
+    if (!is_int($cost)) {
+        $errors += ['cost' => 'Введите целое число'];
+    }
+
+    if ($cost < $bet_min) {
+        $errors += ['cost' => 'Сделайте ставку не ниже минимальной'];
+    }
+
     if (count($errors) === 0) {
         $sql = 'INSERT INTO bet (bet_date, amount_to_buy, user_id, lot_id)
                 VALUES (NOW(), ?, ?, ? )';
@@ -128,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $lot_history = include_template('lot_history.php', [
-
+    'bet_list'       => $bet_list
 ]);
 
 $page_content = include_template('lot.php', [
@@ -138,7 +182,11 @@ $page_content = include_template('lot.php', [
     'current_cost'   => $current_cost,
     'bet_min'        => $bet_min,
     'timer'          => $timer,
-    'id'             => $id
+    'id'             => $id,
+    'errors'         => $errors,
+    'user_bet'       => $user_bet,
+    'not_author'     => $not_author,
+    'none_bet'       => $none_bet
 ]);
 
 $layout_content = include_template('layout.php', [
