@@ -115,7 +115,9 @@ $sql = 'SELECT bet_date, amount_to_buy, user_id, user.name AS user_name
         FROM bet
         LEFT JOIN user
         ON bet.user_id = user.id
-        ORDER BY bet_date DESC';
+        ORDER BY bet_date
+        DESC
+        LIMIT 10';
 
 $result = mysqli_query($connect, $sql);
 $bet_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -169,10 +171,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
         mysqli_stmt_execute($stmt);
     }
+
+    echo "<meta http-equiv='refresh' content='0'>";
 }
 
 $lot_history = include_template('lot_history.php', [
-    'bet_list'       => $bet_list
+    'bet_list'       => $bet_list,
 ]);
 
 $page_content = include_template('lot.php', [
