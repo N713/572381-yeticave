@@ -51,7 +51,7 @@
                     <p class="lot-item__form-item form__item <?= $classname; ?>">
                         <label for="cost">Ваша ставка</label>
                         <input id="cost" type="text" name="cost" placeholder="<?= strip_tags($bet_min); ?>" value=''>
-                        <span class="form__error"><?= strip_tags($errors['cost']) ?? ''; ?></span>
+                        <span class="form__error"><?= strip_tags($errors['cost'] ?? '' ); ?></span>
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>
