@@ -19,12 +19,9 @@
     /**
      * Функция - шаблонизатор
      *
-     * $name - имя файла - шаблона
-     * $data - данные в виде ассоциативного массива
+     * @param string $name - имя файла - шаблона
      *
-     * @param string $name
-     *
-     * @param array $data
+     * @param array $data - данные в виде ассоциативного массива
      */
     function include_template($name, $data) {
         $name = 'templates/' . $name;
@@ -46,7 +43,7 @@
     /**
      * Функция для отсчета времени
      *
-     * @param $time - финальная дата
+     * @param datetime $time - финальная дата
      *
      * @return string $time - оставшееся время
      */
@@ -65,7 +62,7 @@
     /**
      * Функция для получения категорий лотов
      *
-     * @param $connect - ресурс подключения
+     * @param mysqli $connect - ресурс подключения
      *
      * @return array
      */
@@ -86,11 +83,11 @@
     /**
      * Функция проверки email на занятость
      *
-     * @param $link - ресурс подключения
+     * @param mysqli $link - ресурс подключения
      *
-     * @param $email - почта
+     * @param string $email - почта
      *
-     * @return boolean
+     * @return bool
     */
     function is_email_available ($link, $email) {
         $email = mysqli_real_escape_string($link, $email);
@@ -110,7 +107,7 @@
      *
      * @param $image - изображение
      *
-     * @return boolean
+     * @return bool
     */
     function is_valid_image ($image) {
 
@@ -129,7 +126,7 @@
      * Получает массив из запроса
      * Использует подготовленное выражение
      *
-     * @param $link - ресурс соединиения
+     * @param mysqli $link - ресурс соединиения
      *
      * @param $sql  - sql запрос
      *
@@ -147,4 +144,22 @@
         $name = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
         return $name;
+    }
+
+    function humanize_time ($time) {
+        $hours = floor($time / 3600);
+        $minutes = floor(($time % 3600) / 60 );
+
+        if ($hours > 1) {
+            return $hours_minutes = $hours . ' часов ' . $minutes . ' минут назад';
+        } else {
+            return $only_minutes = $minutes . ' минут назад';
+        }
+    }
+
+    function humanize_date ($date) {
+        $date = date_create($date);
+        $date = date_format($date, 'd.m.Y' . ' в ' . 'H:i:s');
+
+        return $date;
     }

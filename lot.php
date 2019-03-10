@@ -170,9 +170,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $current_id
         );
         mysqli_stmt_execute($stmt);
-    }
 
-    echo "<meta http-equiv='refresh' content='0'>";
+        echo "<meta http-equiv='refresh' content='0'>";
+    }
 }
 
 $lot_history = include_template('lot_history.php', [

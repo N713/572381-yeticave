@@ -48,7 +48,7 @@
                             <?php endif; ?>
                         </div>
                         <div class="lot__timer timer">
-                            <?= strip_tags($lot['final_date']); ?>
+                            <?= strip_tags(to_countdown_time($lot['final_date'])); ?>
                         </div>
                     </div>
                 </div>
