@@ -83,6 +83,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    $current_date = (array)date_create();
+    $current_date = mb_strimwidth($current_date['date'], 0, 10);
+    $current_date = strtotime($current_date);
+    $final_date = strtotime($lot['final_date']);
+
+    if ($final_date - $current_date < 86400) {
+        $errors += ['final_date' => 'Выберите корректную дату'];
+    }
+
     if (count($errors) === 0) {
 
         $url = '/img/'.$lot['image'];

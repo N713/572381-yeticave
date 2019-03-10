@@ -70,7 +70,7 @@ $bet_max = $bet_max[0] ?? null;
 
 $current_cost = '';
 
-if ($bet_max['max_bet'] !== null) {
+if (isset($bet_max['max_bet']) && $bet_max['max_bet'] !== null) {
     $current_cost = $bet_max['max_bet'];
 } else {
     $current_cost = $start_cost;
@@ -107,12 +107,13 @@ $sql = 'SELECT bet_date, amount_to_buy, user_id, user.name AS user_name
         FROM bet
         LEFT JOIN user
         ON bet.user_id = user.id
+        WHERE bet.lot_id = ?
         ORDER BY bet_date
         DESC
         LIMIT 10';
 
-$result = mysqli_query($connect, $sql);
-$bet_list = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$bet_list = [];
+$bet_list = get_sql_array($connect, $sql, $current_id);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
