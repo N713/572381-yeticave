@@ -40,21 +40,21 @@ $sql = 'SELECT lot.id AS lot_id, time_of_create, lot.name AS lot_name, category_
         WHERE lot.id = ? ';
 
 $lot = [];
-$lot = get_sql_array($connect, $sql, $lot, $id);
+$lot = get_sql_array($connect, $sql, $id);
 
-$current_id = '';
-$lot_name   = '';
-$start_cost = '';
-$final_date = '';
-$author_id  = '';
-
-foreach ($lot as $item) {
-    $current_id = $item['lot_id'];
-    $lot_name   = $item['lot_name'];
-    $start_cost = $item['start_cost'];
-    $final_date = $item['final_date'];
-    $author_id  = $item['author_id'];
+if (!isset($lot)) {
+    header('Location: 404.php');
+    exit();
 }
+
+$lot = $lot[0];
+
+$current_id = isset($lot['lot_id']) ? $lot['lot_id'] : null;
+$lot_name   = isset($lot['lot_name']) ? $lot['lot_name'] : null;
+$start_cost = isset($lot['start_cost']) ? $lot['start_cost'] : null;
+$final_date = isset($lot['final_date']) ? $lot['final_date'] : null;
+$author_id  = isset($lot['author_id']) ? $lot['author_id'] : null;
+$bet_step   = isset($lot['bet_step']) ? $lot['bet_step'] : null;
 
 $timer = to_countdown_time($final_date);
 
@@ -65,16 +65,8 @@ $sql = 'SELECT MAX(amount_to_buy) AS max_bet
         WHERE lot.id = ? ';
 
 $bet_max = [];
-$bet_max = get_sql_array($connect, $sql, $bet_max, $current_id);
+$bet_max = get_sql_array($connect, $sql, $current_id);
 $bet_max = $bet_max[0] ?? null;
-
-$sql = 'SELECT bet_step
-        FROM lot
-        WHERE id = ? ';
-
-$bet_step = [];
-$bet_step = get_sql_array($connect, $sql, $bet_step, $current_id);
-$bet_step = $bet_step[0] ?? null;
 
 $current_cost = '';
 
@@ -84,14 +76,14 @@ if ($bet_max['max_bet'] !== null) {
     $current_cost = $start_cost;
 }
 
-$bet_min = $current_cost + $bet_step['bet_step'];
+$bet_min = $current_cost + $bet_step;
 
 $sql = 'SELECT user_id
         FROM bet
         WHERE lot_id = ? ';
 
 $user_bet = [];
-$user_bet = get_sql_array($connect, $sql, $user_bet, $current_id);
+$user_bet = get_sql_array($connect, $sql, $current_id);
 $user_bet = $user_bet[0] ?? null;
 
 $errors = [];
@@ -99,7 +91,7 @@ $errors = [];
 $not_author  = true;
 $none_bet    = true;
 
-if ($user) {
+if (is_array($user)) {
 
     if ($author_id === $user['id']) {
         $not_author = false;

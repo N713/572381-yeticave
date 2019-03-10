@@ -105,7 +105,7 @@
     /**
      * Проверяет изображение на разрешенные форматы
      *
-     * @param $image - изображение
+     * @param string $image - изображение
      *
      * @return bool
     */
@@ -130,22 +130,39 @@
      *
      * @param $sql  - sql запрос
      *
-     * @param $name - имя будущего массива
+     * @param string $name - имя будущего массива
      *
-     * @param $variable - переменная для вставки в выражение
+     * @param string $variable - переменная для вставки в выражение
      *
      * @return array $name
     */
-    function get_sql_array ($link, $sql, $name, $variable) {
+    function get_sql_array ($link, $sql, $variable) {
 
         $stmt = db_get_prepare_stmt($link, $sql, [$variable]);
         mysqli_stmt_execute($stmt);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            print('Ошибка в mysqli_stmt_execute()');
+        }
+
         $result = mysqli_stmt_get_result($stmt);
+
+        if (!$result) {
+            print('Ошибка в mysqli_stmt_get_result()');
+        }
+
         $name = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
         return $name;
     }
 
+    /**
+     * Приводит время в "человеческий" вид
+     *
+     * @param time $time
+     *
+     * @return string
+    */
     function humanize_time ($time) {
         $hours = floor($time / 3600);
         $minutes = floor(($time % 3600) / 60 );
@@ -157,9 +174,16 @@
         }
     }
 
+    /**
+     * Приводит дату и время в "человеческий" вид
+     *
+     * @param datetime $date
+     *
+     * @return string
+    */
     function humanize_date ($date) {
         $date = date_create($date);
-        $date = date_format($date, 'd.m.Y' . ' в ' . 'H:i:s');
+        $date = date_format($date, 'd.m.Y' . ' в ' . 'H:i');
 
         return $date;
     }
