@@ -1,9 +1,9 @@
 <?php $classname = is_array($errors) ? "form--invalid" : ""; ?>
-<form class="form form--add-lot container <?= $classname; ?>" action="add.php" method="post" enctype="multipart/form-data"> <!-- form--invalid -->
+<form class="form form--add-lot container <?= $classname; ?>" action="add.php" method="post" enctype="multipart/form-data">
   <h2>Добавление лота</h2>
   <div class="form__container-two">
     <?php $classname = isset($errors['name']) ? "form__item--invalid" : ""; ?>
-    <div class="form__item <?= $classname; ?>"> <!-- form__item--invalid -->
+    <div class="form__item <?= $classname; ?>">
       <?php $name = $lot['name'] ?? ''; ?>
       <label for="lot-name">Наименование</label>
       <input id="lot-name" type="text" name="name" placeholder="Введите наименование лота" value="<?= $name; ?>">
@@ -35,7 +35,7 @@
     <span class="form__error"><?= $errors['description'] ?? ''; ?></span>
   </div>
   <?php $classname = isset($errors['image']) ? "form__item--invalid" : ""; ?>
-  <div class="form__item form__item--file <?= $classname; ?>"> <!-- form__item--uploaded -->
+  <div class="form__item form__item--file <?= $classname; ?>">
     <label>Изображение</label>
     <div class="preview">
       <button class="preview__remove" type="button">x</button>

@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_FILES['image']['error']) && $_FILES['image']['error'] === 1) {
         $errors += ['image' => 'Произошла ошибка при загрузке'];
-    } else if (!empty($fields['image'])) {
+    } else if (!empty($fields['image']) && isset($fields['image'])) {
         $format = is_valid_image($fields['image_path']);
         if ($format === false) {
             $errors += ['image' => 'Загрузите изображение в формате jpeg/png'];
@@ -84,9 +84,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $current_date = (array)date_create();
-    $current_date = mb_strimwidth($current_date['date'], 0, 10);
+
+    if (isset($current_date['date'])) {
+        $current_date = mb_strimwidth($current_date['date'], 0, 10);
+    }
+
     $current_date = strtotime($current_date);
-    $final_date = strtotime($lot['final_date']);
+
+    if (isset($lot['final_date'])) {
+        $final_date = strtotime($lot['final_date']);
+    }
 
     if ($final_date - $current_date < 86400) {
         $errors += ['final_date' => 'Выберите корректную дату'];
