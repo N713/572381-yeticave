@@ -105,14 +105,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sql = 'INSERT INTO lot (time_of_create, name, category_id, author_id, description,
                                  image, start_cost, bet_step, final_date)
-                VALUES (NOW(), ?, ?, 3, ?, ?, ?, ?, ?)';
+                VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
 
         $stmt = mysqli_prepare($connect, $sql);
         mysqli_stmt_bind_param(
             $stmt,
-            'sissiis',
+            'siissiis',
             $lot['name'],
             $lot['category'],
+            $user['id'],
             $lot['description'],
             $url,
             $lot['start_cost'],

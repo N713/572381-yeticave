@@ -87,8 +87,6 @@ $user_bet = get_sql_array($connect, $sql, $current_id);
 $not_author  = true;
 $none_bet    = true;
 
-var_dump($user_bet);
-
 foreach ($user_bet as $user_bet) {
     $search = array_search($user['id'], $user_bet, true);
 
@@ -97,7 +95,9 @@ foreach ($user_bet as $user_bet) {
     }
 }
 
-var_dump($none_bet);
+if ($author_id === $user['id']) {
+    $not_author = false;
+}
 
 $errors = [];
 

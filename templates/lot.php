@@ -34,9 +34,11 @@
                         <span class="lot-item__amount">Текущая цена</span>
                         <span class="lot-item__cost"><?= strip_tags($current_cost); ?></span>
                     </div>
-                    <div class="lot-item__min-cost">
-                        Мин. ставка <span><?= strip_tags($bet_min); ?></span>
-                    </div>
+                    <?php if( (is_array($user) && $user !== []) && (strip_tags($timer) > 0) && $not_author && $none_bet ): ?>
+                        <div class="lot-item__min-cost">
+                            Мин. ставка <span><?= strip_tags($bet_min); ?></span>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <?php if( (is_array($user) && $user !== []) && (strip_tags($timer) > 0) && $not_author && $none_bet ): ?>
                     <form class="lot-item__form" action="lot.php?tab=<?= $id; ?>" method="post">
