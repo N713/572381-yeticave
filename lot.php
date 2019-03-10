@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('Europe/Moscow');
 
 if(file_exists('config.php')) {
     require_once 'config.php';
@@ -84,24 +83,23 @@ $sql = 'SELECT user_id
 
 $user_bet = [];
 $user_bet = get_sql_array($connect, $sql, $current_id);
-$user_bet = $user_bet[0] ?? null;
-
-$errors = [];
 
 $not_author  = true;
 $none_bet    = true;
 
-if (is_array($user)) {
+var_dump($user_bet);
 
-    if ($author_id === $user['id']) {
-        $not_author = false;
+foreach ($user_bet as $user_bet) {
+    $search = array_search($user['id'], $user_bet, true);
+
+    if ($search) {
+        $none_bet = false;
     }
-
-    if ($user_bet['user_id'] === $user['id']) {
-        $none_bet   = false;
-    }
-
 }
+
+var_dump($none_bet);
+
+$errors = [];
 
 $sql = 'SELECT bet_date, amount_to_buy, user_id, user.name AS user_name
         FROM bet

@@ -169,9 +169,9 @@
 
         if ($hours > 1) {
             return $hours_minutes = $hours . ' часов ' . $minutes . ' минут назад';
-        } else {
-            return $only_minutes = $minutes . ' минут назад';
         }
+
+        return $only_minutes = $minutes . ' минут назад';
     }
 
     /**
