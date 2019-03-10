@@ -1,7 +1,7 @@
-<form class="form container" action="login.php" method="post"> <!-- form--invalid -->
+<form class="form container" action="login.php" method="post">
   <h2>Вход</h2>
   <?php $classname = isset($errors['email']) ? "form__item--invalid" : ""; ?>
-  <div class="form__item <?= $classname; ?>"> <!-- form__item--invalid -->
+  <div class="form__item <?= $classname; ?>">
     <label for="email">E-mail*</label>
     <?php $email = $fields['email'] ?? ''; ?>
     <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?= $email; ?>">

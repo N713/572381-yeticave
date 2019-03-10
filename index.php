@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('Europe/Moscow');
 
 if(file_exists('config.php')) {
     require_once 'config.php';

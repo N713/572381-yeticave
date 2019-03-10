@@ -40,17 +40,21 @@
                             <?php endif; ?>
                         <?php endif; ?>
                     </h3>
-                    <div class="lot__state">
-                        <div class="lot__rate">
-                            <span class="lot__amount">Стартовая цена</span>
-                            <?php if (isset($lot['start_cost'])):?>
-                                <span class="lot__cost"><?= strip_tags(format_price($lot['start_cost'])); ?>
-                            <?php endif; ?>
+                    <?php if ( strip_tags(to_countdown_time($lot['final_date'])) > 0): ?>
+                        <div class="lot__state">
+                            <div class="lot__rate">
+                                <span class="lot__amount">Стартовая цена</span>
+                                <?php if (isset($lot['start_cost'])):?>
+                                    <span class="lot__cost"><?= strip_tags(format_price($lot['start_cost'])); ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="lot__timer timer">
+                                <?= strip_tags(to_countdown_time($lot['final_date'])); ?>
+                            </div>
                         </div>
-                        <div class="lot__timer timer">
-                            <?= strip_tags($lot['final_date']); ?>
-                        </div>
-                    </div>
+                    <?php else: ?>
+                        <p class="lot__state">Торги завершены</p>
+                    <?php endif; ?>
                 </div>
             </li>
         <?php endforeach; ?>

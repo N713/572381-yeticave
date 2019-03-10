@@ -1,115 +1,60 @@
-<?php foreach($lot as $item): ?>
-    <h2>
-        <?php if (isset($item['lot_name'])): ?>
-            <?= strip_tags($item['lot_name']); ?>
-        <?php endif; ?>
-    </h2>
-<?php endforeach; ?>
+<h2>
+    <?php if (isset($lot['lot_name'])): ?>
+        <?= strip_tags($lot['lot_name']); ?>
+    <?php endif; ?>
+</h2>
 <div class="lot-item__content">
     <div class="lot-item__left">
-        <?php foreach($lot as $item): ?>
-            <div class="lot-item__image">
-                <?php if (isset($item['image'])): ?>
-                    <img src="<?= strip_tags($item['image']); ?>" width="730" height="548" alt="Картинка">
-                <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
-        <p class="lot-item__category">Категория:
-            <?php foreach($lot as $item): ?>
-                <span>
-                    <?php if (isset($item['category_name'])): ?>
-                        <?= strip_tags($item['category_name']); ?>
-                    <?php endif; ?>
-                </span>
-            <?php endforeach; ?>
-        </p>
-        <?php foreach($lot as $item): ?>
-            <?php if (isset($item['description'])): ?>
-                <p class="lot-item__description">
-                    <?= $item['description']; ?>
-                </p>
+        <div class="lot-item__image">
+            <?php if (isset($lot['image'])): ?>
+                <img src="<?= strip_tags($lot['image']); ?>" width="730" height="548" alt="Картинка">
             <?php endif; ?>
-        <?php endforeach; ?>
+        </div>
+        <p class="lot-item__category">Категория:
+            <span>
+                <?php if (isset($lot['category_name'])): ?>
+                    <?= strip_tags($lot['category_name']); ?>
+                <?php endif; ?>
+            </span>
+        </p>
+        <?php if (isset($lot['description'])): ?>
+            <p class="lot-item__description">
+                <?= $lot['description']; ?>
+            </p>
+        <?php endif; ?>
     </div>
     <div class="lot-item__right">
-        <div class="lot-item__state">
-            <div class="lot-item__timer timer">
-                10:54
-            </div>
-            <div class="lot-item__cost-state">
-                <div class="lot-item__rate">
-                    <span class="lot-item__amount">Текущая цена</span>
-                    <span class="lot-item__cost">10 999</span>
+        <?php if ( strip_tags($timer) > 0): ?>
+            <div class="lot-item__state">
+                <div class="lot-item__timer timer">
+                    <?= strip_tags($timer); ?>
                 </div>
-                <div class="lot-item__min-cost">
-                    Мин. ставка <span>12 000 р</span>
+                <div class="lot-item__cost-state">
+                    <div class="lot-item__rate">
+                        <span class="lot-item__amount">Текущая цена</span>
+                        <span class="lot-item__cost"><?= strip_tags($current_cost); ?></span>
+                    </div>
+                    <?php if( (is_array($user) && $user !== []) && (strip_tags($timer) > 0) && $not_author && $none_bet ): ?>
+                        <div class="lot-item__min-cost">
+                            Мин. ставка <span><?= strip_tags($bet_min); ?></span>
+                        </div>
+                    <?php endif; ?>
                 </div>
+                <?php if( (is_array($user) && $user !== []) && (strip_tags($timer) > 0) && $not_author && $none_bet ): ?>
+                    <form class="lot-item__form" action="lot.php?tab=<?= $id; ?>" method="post">
+                        <?php $classname = isset($errors['cost']) ? "form__item--invalid" : ""; ?>
+                        <p class="lot-item__form-item form__item <?= $classname; ?>">
+                            <label for="cost">Ваша ставка</label>
+                            <input id="cost" type="text" name="cost" placeholder="<?= strip_tags($bet_min); ?>" value=''>
+                            <span class="form__error"><?= strip_tags($errors['cost'] ?? '' ); ?></span>
+                        </p>
+                        <button type="submit" class="button">Сделать ставку</button>
+                    </form>
+                <?php endif; ?>
             </div>
-            <?php if(is_array($user) and $user !== []): ?>
-                <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
-                    <p class="lot-item__form-item form__item form__item--invalid">
-                        <label for="cost">Ваша ставка</label>
-                        <input id="cost" type="text" name="cost" placeholder="12 000">
-                        <span class="form__error">Введите наименование лота</span>
-                    </p>
-                    <button type="submit" class="button">Сделать ставку</button>
-                </form>
-            <?php endif; ?>
-        </div>
-        <div class="history">
-            <h3>История ставок (<span>10</span>)</h3>
-            <table class="history__list">
-                <tr class="history__item">
-                    <td class="history__name">Иван</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">5 минут назад</td>
-                </tr>
-                <tr class="history__item">
-                    <td class="history__name">Константин</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">20 минут назад</td>
-                </tr>
-                <tr class="history__item">
-                    <td class="history__name">Евгений</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">Час назад</td>
-                </tr>
-                <tr class="history__item">
-                    <td class="history__name">Игорь</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">19.03.17 в 08:21</td>
-                </tr>
-                <tr class="history__item">
-                    <td class="history__name">Енакентий</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">19.03.17 в 13:20</td>
-                </tr>
-                <tr class="history__item">
-                    <td class="history__name">Семён</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">19.03.17 в 12:20</td>
-                </tr>
-                <tr class="history__item">
-                    <td class="history__name">Илья</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">19.03.17 в 10:20</td>
-                </tr>
-                <tr class="history__item">
-                    <td class="history__name">Енакентий</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">19.03.17 в 13:20</td>
-                </tr>
-                <tr class="history__item">
-                    <td class="history__name">Семён</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">19.03.17 в 12:20</td>
-                </tr>
-                <tr class="history__item">
-                    <td class="history__name">Илья</td>
-                    <td class="history__price">10 999 р</td>
-                    <td class="history__time">19.03.17 в 10:20</td>
-                </tr>
-            </table>
-        </div>
+        <?php else: ?>
+            <p class="lot-item__state">Торги завершены</p>
+        <?php endif; ?>
+        <?= $lot_history; ?>
     </div>
 </div>

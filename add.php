@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('Europe/Moscow');
 
 if (file_exists('config.php')) {
     require_once 'config.php';
@@ -76,11 +75,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_FILES['image']['error']) && $_FILES['image']['error'] === 1) {
         $errors += ['image' => 'Произошла ошибка при загрузке'];
-    } else if (!empty($fields['image'])) {
+    } else if (!empty($fields['image']) && isset($fields['image'])) {
         $format = is_valid_image($fields['image_path']);
         if ($format === false) {
             $errors += ['image' => 'Загрузите изображение в формате jpeg/png'];
         }
+    }
+
+    $current_date = (array)date_create();
+
+    if (isset($current_date['date'])) {
+        $current_date = mb_strimwidth($current_date['date'], 0, 10);
+    }
+
+    $current_date = strtotime($current_date);
+
+    if (isset($lot['final_date'])) {
+        $final_date = strtotime($lot['final_date']);
+    }
+
+    if ($final_date - $current_date < 86400) {
+        $errors += ['final_date' => 'Выберите корректную дату'];
     }
 
     if (count($errors) === 0) {
@@ -90,14 +105,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sql = 'INSERT INTO lot (time_of_create, name, category_id, author_id, description,
                                  image, start_cost, bet_step, final_date)
-                VALUES (NOW(), ?, ?, 3, ?, ?, ?, ?, ?)';
+                VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
 
         $stmt = mysqli_prepare($connect, $sql);
         mysqli_stmt_bind_param(
             $stmt,
-            'sissiis',
+            'siissiis',
             $lot['name'],
             $lot['category'],
+            $user['id'],
             $lot['description'],
             $url,
             $lot['start_cost'],
