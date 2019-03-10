@@ -22,6 +22,8 @@
      * @param string $name - имя файла - шаблона
      *
      * @param array $data - данные в виде ассоциативного массива
+     *
+     * @return string | false
      */
     function include_template($name, $data) {
         $name = 'templates/' . $name;
@@ -130,8 +132,6 @@
      *
      * @param $sql  - sql запрос
      *
-     * @param string $name - имя будущего массива
-     *
      * @param string $variable - переменная для вставки в выражение
      *
      * @return array $name
@@ -159,7 +159,7 @@
     /**
      * Приводит время в "человеческий" вид
      *
-     * @param time $time
+     * @param int $time
      *
      * @return string
     */
@@ -177,7 +177,7 @@
     /**
      * Приводит дату и время в "человеческий" вид
      *
-     * @param datetime $date
+     * @param string $date
      *
      * @return string
     */
